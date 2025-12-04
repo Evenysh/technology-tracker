@@ -1,4 +1,37 @@
 /* src/components/TechnologyCard.css */
+
+.technology-card {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 15px 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.technology-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.technology-card.not-started {
+  border-color: #ff6b6b;
+  background-color: #ffeaea;
+}
+
+.technology-card.in-progress {
+  border-color: #4ecdc4;
+  background-color: #e0f7fa;
+}
+
+.technology-card.completed {
+  border-color: #45b7d1;
+  background-color: #e3f2fd;
+}
+
+
+
+
 .technology-card {
   border: 2px solid #ccc;
   border-radius: 10px;

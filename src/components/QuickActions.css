@@ -1,0 +1,59 @@
+/* Стили для QuickActions */
+.quick-actions {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 25px 0;
+  border: 2px solid #e0e0e0;
+}
+
+.quick-actions h3 {
+  margin-top: 0;
+  color: #333;
+  text-align: center;
+}
+
+.actions-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.action-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-size: 0.95em;
+}
+
+.action-btn.complete-all {
+  background: linear-gradient(135deg, #45b7d1, #4ecdc4);
+  color: white;
+}
+
+.action-btn.reset-all {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  color: white;
+}
+
+.action-btn.random-pick {
+  background: linear-gradient(135deg, #8a2be2, #d63384);
+  color: white;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.actions-hint {
+  text-align: center;
+  color: #666;
+  margin-top: 15px;
+  font-size: 0.9em;
+}

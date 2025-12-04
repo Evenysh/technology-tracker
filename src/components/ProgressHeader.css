@@ -38,7 +38,7 @@
   display: block;
   font-size: 2em;
   font-weight: bold;
-  color: #3498db;
+  color: #4B0082;
 }
 
 .progress-bar-container {
@@ -51,6 +51,10 @@
   margin-bottom: 10px;
   font-size: 1em;
   color: #555;
+}
+
+.progress-bar-label strong {
+  color: #4B0082; /* Тот же тёмно-фиолетовый */
 }
 
 .progress-bar {
