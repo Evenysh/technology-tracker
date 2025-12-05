@@ -1,59 +1,183 @@
-/* Стили для QuickActions */
+/* src/components/QuickActions.css */
 .quick-actions {
-  background: #f8f9fa;
+  background: white;
   border-radius: 12px;
-  padding: 20px;
-  margin: 25px 0;
-  border: 2px solid #e0e0e0;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 16px rgba(106, 13, 173, 0.08);
+  border: 1px solid #f0e6ff;
 }
 
 .quick-actions h3 {
   margin-top: 0;
-  color: #333;
-  text-align: center;
+  color: #4B0082;
+  font-size: 1.4em;
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e6e6ff;
 }
 
 .actions-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin: 20px 0;
+  gap: 14px;
+  margin: 20px 0 30px;
 }
 
 .action-btn {
-  padding: 12px 20px;
+  padding: 15px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
+  font-weight: 600;
   font-size: 0.95em;
-}
-
-.action-btn.complete-all {
-  background: linear-gradient(135deg, #45b7d1, #4ecdc4);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  min-width: 220px;
+  text-align: center;
+  letter-spacing: 0.3px;
   color: white;
-}
-
-.action-btn.reset-all {
-  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-  color: white;
-}
-
-.action-btn.random-pick {
-  background: linear-gradient(135deg, #8a2be2, #d63384);
-  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
 .action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(106, 13, 173, 0.2);
 }
 
-.actions-hint {
-  text-align: center;
+.action-btn:active {
+  transform: translateY(-1px);
+}
+
+.action-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.action-btn:hover::after {
+  left: 100%;
+}
+
+/* Основная кнопка - индиго */
+.btn-primary {
+  background: linear-gradient(135deg, #4B0082, #6a0dad);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #3a0066, #5a0a9c);
+}
+
+/* Вторичная кнопка - фиолетовый */
+.btn-secondary {
+  background: linear-gradient(135deg, #8a2be2, #9400d3);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #7a1bd2, #8400c3);
+}
+
+/* Акцентная кнопка - синий */
+.btn-accent {
+  background: linear-gradient(135deg, #4169e1, #1e90ff);
+}
+
+.btn-accent:hover {
+  background: linear-gradient(135deg, #3159d1, #0e80ef);
+}
+
+/* Специальная кнопка - глубокий фиолетовый */
+.btn-special {
+  background: linear-gradient(135deg, #9370db, #8a2be2);
+}
+
+.btn-special:hover {
+  background: linear-gradient(135deg, #8360cb, #7a1bd2);
+}
+
+.quick-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 25px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f6ff, #f0ebff);
+  border-radius: 10px;
+  font-size: 0.95em;
+  border: 1px solid #e6e6ff;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-label {
   color: #666;
-  margin-top: 15px;
+  font-weight: 500;
   font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  min-width: 36px;
+  text-align: center;
+}
+
+.stat-completed {
+  color: #4B0082;
+}
+
+.stat-in-progress {
+  color: #4169e1;
+}
+
+.stat-not-started {
+  color: #9370db;
+}
+
+.export-modal-content {
+  text-align: center;
+  padding: 15px;
+}
+
+.export-modal-content p {
+  margin: 14px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.export-modal-content strong {
+  color: #4B0082;
+}
+
+.modal-close-btn {
+  margin-top: 25px;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #6a0dad, #8a2be2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  font-size: 0.95em;
+  min-width: 120px;
+}
+
+.modal-close-btn:hover {
+  background: linear-gradient(135deg, #5a0c9d, #7a1bd2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(106, 13, 173, 0.3);
 }

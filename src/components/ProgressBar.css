@@ -1,0 +1,43 @@
+/* src/components/ProgressBar.css */
+.progress-bar-component {
+  width: 100%;
+  margin: 15px 0;
+}
+
+.progress-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1em;
+}
+
+.progress-percentage {
+  font-weight: bold;
+  color: #4B0082;
+  font-size: 1.1em;
+}
+
+.progress-bar-outer {
+  background-color: #ecf0f1;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 20px; /* ← высота по умолчанию */
+}
+
+.progress-bar-inner {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+  background: linear-gradient(90deg, #d63384, #8a2be2); /* ← ГРАДИЕНТ розовый → фиолетовый */
+}
+
+.progress-bar-inner.animated {
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}

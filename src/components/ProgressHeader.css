@@ -41,39 +41,13 @@
   color: #4B0082;
 }
 
-.progress-bar-container {
-  margin-top: 20px;
-}
-
-.progress-bar-label {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 1em;
-  color: #555;
-}
-
-.progress-bar-label strong {
-  color: #4B0082; /* Тот же тёмно-фиолетовый */
-}
-
-.progress-bar {
-  height: 20px;
-  background-color: #ecf0f1;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #d63384, #8a2be2); /* розовый -> фиолетовый */
-  border-radius: 10px;
-  transition: width 0.5s ease;
-}
-
 .progress-text {
   text-align: center;
   color: #7f8c8d;
   font-size: 0.9em;
+  margin-top: 15px;
+}
+
+.main-progress-bar {
+  margin-top: 20px;
 }

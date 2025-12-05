@@ -169,3 +169,19 @@
 .card-main {
   margin-bottom: 10px;
 }
+
+/* Временно добавьте в TechnologyCard.css */
+.technology-card.completed {
+  border-color: #8a2be2 !important;
+  background-color: #f3e8ff !important;
+}
+
+.technology-card.in-progress {
+  border-color: #d63384 !important;
+  background-color: #ffe8f0 !important;
+}
+
+.technology-card.not-started {
+  border-color: #adb5bd !important;
+  background-color: #f8f9fa !important;
+}
