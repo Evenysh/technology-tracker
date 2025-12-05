@@ -1,5 +1,6 @@
 /* src/components/TechnologyCard.css */
 
+/* Основные стили карточки */
 .technology-card {
   border: 2px solid #ccc;
   border-radius: 10px;
@@ -7,82 +8,164 @@
   margin: 15px 0;
   transition: all 0.3s ease;
   cursor: pointer;
+  background: white;
 }
 
 .technology-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.technology-card.not-started {
-  border-color: #ff6b6b;
-  background-color: #ffeaea;
+/* Стили по статусам */
+.technology-card.completed {
+  border-color: #8a2be2;
+  background-color: #f3e8ff;
 }
 
 .technology-card.in-progress {
-  border-color: #4ecdc4;
-  background-color: #e0f7fa;
-}
-
-.technology-card.completed {
-  border-color: #45b7d1;
-  background-color: #e3f2fd;
-}
-
-
-
-
-.technology-card {
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 15px 0;
-  transition: all 0.3s;
-}
-
-.technology-card.completed {
-  border-color: #8a2be2; /* фиолетовый */
-  background-color: #f3e8ff; /* светло-фиолетовый */
-}
-
-.technology-card.in-progress {
-  border-color: #d63384; /* розовый */
-  background-color: #ffe8f0; /* светло-розовый */
+  border-color: #d63384;
+  background-color: #ffe8f0;
 }
 
 .technology-card.not-started {
-  border-color: #adb5bd; /* серый */
+  border-color: #adb5bd;
   background-color: #f8f9fa;
 }
 
+/* Заголовок и описание */
 .technology-card h3 {
   margin: 0 0 10px 0;
-  color: #333;
+  color: #2c3e50;
 }
 
 .technology-card p {
   margin: 0 0 15px 0;
-  color: #666;
+  color: #555;
 }
 
+/* Индикатор статуса */
 .status-indicator {
   font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
   display: inline-block;
+  font-size: 0.9em;
 }
 
 .completed .status-indicator {
-  background-color: #8a2be2; /* фиолетовый */
+  background-color: #8a2be2;
   color: white;
 }
 
 .in-progress .status-indicator {
-  background-color: #d63384; /* розовый */
+  background-color: #d63384;
   color: white;
 }
 
 .not-started .status-indicator {
   background-color: #adb5bd;
   color: white;
+}
+
+/* ========== КНОПКА ЗАМЕТОК ========== */
+.notes-toggle {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #8a2be2;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  color: white;
+  transition: all 0.2s ease;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.notes-toggle:hover {
+  background-color: white;
+  color: #8a2be2;
+  border-color: #8a2be2;
+  transform: translateY(-2px);
+}
+
+/* Цвета кнопки по статусам */
+.completed .notes-toggle {
+  background-color: #8a2be2;
+}
+
+.completed .notes-toggle:hover {
+  background-color: white;
+  color: #8a2be2;
+  border-color: #8a2be2;
+}
+
+.in-progress .notes-toggle {
+  background-color: #d63384;
+}
+
+.in-progress .notes-toggle:hover {
+  background-color: white;
+  color: #d63384;
+  border-color: #d63384;
+}
+
+.not-started .notes-toggle {
+  background-color: #6c757d;
+}
+
+.not-started .notes-toggle:hover {
+  background-color: white;
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* ========== ОБЛАСТЬ ЗАМЕТОК ========== */
+.notes-editor {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #eaeaea;
+}
+
+.notes-editor h4 {
+  margin: 0 0 10px 0;
+  color: #444;
+  font-size: 1em;
+}
+
+.notes-editor textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9em;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+  transition: border 0.2s;
+}
+
+.notes-editor textarea:focus {
+  outline: none;
+  border-color: #8a2be2;
+  box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.1);
+}
+
+.notes-hint {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 8px;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Разделение кликабельной области и заметок */
+.card-main {
+  margin-bottom: 10px;
 }
