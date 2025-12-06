@@ -1,80 +1,78 @@
 // src/components/TechnologyCard.jsx
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../i18n/translations';
 import './TechnologyCard.css';
-import { useState } from 'react'; // для локального состояния
+import { useState } from 'react';
 
 function TechnologyCard({ 
   id, 
   title, 
   description, 
   status, 
-  notes, // пропс notes
+  notes,
   onStatusChange, 
-  onNotesChange // пропс для обновления заметок
+  onNotesChange
 }) {
-  // Локальное состояние для показа/скрытия заметок
+  const { language } = useLanguage();
+  const t = translations[language];
+  
   const [showNotes, setShowNotes] = useState(false);
 
-  // Функция-обработчик клика по карточке (для смены статуса)
   const handleClick = () => {
     if (onStatusChange) {
       onStatusChange(id);
     }
   };
 
-  // Функция для изменения заметок
   const handleNotesChange = (e) => {
-    console.log('✏️ TechnologyCard: handleNotesChange', { id, value: e.target.value });
     if (onNotesChange) {
       onNotesChange(id, e.target.value);
-    } else {
-      console.error('❌ onNotesChange не передан в TechnologyCard!');
     }
   };
 
-  // Текст для статуса
   const statusText = {
-    'not-started': 'Не начато',
-    'in-progress': 'В процессе',
-    'completed': 'Изучено'
+    'not-started': t.technologyCard.notStarted,
+    'in-progress': t.technologyCard.inProgress,
+    'completed': t.technologyCard.completed
   };
+
+  const currentStatus = status || 'not-started';
 
   return (
     <div 
-      className={`technology-card ${status}`}
-      title="Кликните, чтобы изменить статус"
+      className={`technology-card ${currentStatus}`}
+      title={t.technologyCard.clickToChangeStatus}
     >
-      {/* Обёртка для кликабельной области статуса */}
       <div className="card-main" onClick={handleClick}>
         <h3>{title}</h3>
         <p>{description}</p>
         <div className="status-indicator">
-          Статус: {statusText[status]}
+          {t.technologyCard.status}: {statusText[currentStatus] || t.technologyCard.notStarted}
         </div>
       </div>
 
-      {/* ========== СЕКЦИЯ ЗАМЕТОК ========== */}
       <div className="notes-section">
         <button 
           className="notes-toggle"
           onClick={() => setShowNotes(!showNotes)}
         >
-          {showNotes ? 'Скрыть заметки' : 'Показать заметки'} 
-          {notes && ` (${notes.length} симв.)`}
+          {showNotes ? t.technologyCard.hideNotes : t.technologyCard.showNotes} 
+          {notes && ` (${notes.length} ${language === 'ru' ? 'симв.' : 'char.'})`}
         </button>
 
         {showNotes && (
           <div className="notes-editor">
-            <h4>Мои заметки:</h4>
+            <h4>{t.technologyCard.myNotes}</h4>
             <textarea
               value={notes || ''}
               onChange={handleNotesChange}
-              placeholder="Записывайте сюда важные моменты..."
+              placeholder={t.technologyCard.notesPlaceholder}
               rows="3"
             />
             <div className="notes-hint">
               {notes && notes.length > 0 
-                ? `Заметка сохранена (${notes.length} символов)` 
-                : 'Добавьте заметку. Она сохранится автоматически.'}
+                ? `${t.technologyCard.notesSaved} (${notes.length} ${language === 'ru' ? 'символов' : 'characters'})` 
+                : t.technologyCard.addNote}
             </div>
           </div>
         )}

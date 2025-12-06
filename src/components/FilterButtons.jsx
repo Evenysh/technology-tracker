@@ -1,28 +1,30 @@
 // src/components/FilterButtons.jsx
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../i18n/translations';
 import './FilterButtons.css';
 
 function FilterButtons({ activeFilter, onFilterChange }) {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const filters = [
-    { key: 'all', label: 'Все' },
-    { key: 'not-started', label: 'Не начаты' },
-    { key: 'in-progress', label: 'В процессе' },
-    { key: 'completed', label: 'Выполнены' }
+    { key: 'all', label: t.home.filterAll },
+    { key: 'not-started', label: t.home.filterNotStarted },
+    { key: 'in-progress', label: t.home.filterInProgress },
+    { key: 'completed', label: t.home.filterCompleted }
   ];
 
   return (
     <div className="filter-buttons">
-      <h3>Фильтр по статусу:</h3>
-      <div className="filter-options">
-        {filters.map(filter => (
-          <button
-            key={filter.key}
-            className={`filter-btn ${activeFilter === filter.key ? 'active' : ''}`}
-            onClick={() => onFilterChange(filter.key)}
-          >
-            {filter.label}
-          </button>
-        ))}
-      </div>
+      {filters.map(filter => (
+        <button
+          key={filter.key}
+          className={`filter-btn ${activeFilter === filter.key ? 'active' : ''}`}
+          onClick={() => onFilterChange(filter.key)}
+        >
+          {filter.label}
+        </button>
+      ))}
     </div>
   );
 }

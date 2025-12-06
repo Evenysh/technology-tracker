@@ -1,0 +1,34 @@
+/* src/themes.css - создай новый файл */
+:root {
+  /* Светлая тема (по умолчанию) */
+  --bg-primary: #f8f6ff;
+  --bg-secondary: #f0ebff;
+  --bg-card: #ffffff;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(106, 13, 173, 0.08);
+  --primary-color: #6a0dad;
+  --primary-gradient: linear-gradient(135deg, #6a0dad, #8a2be2);
+  --hover-color: #f0f0ff;
+  --nav-bg: #ffffff;
+  --nav-text: #4B0082;
+  --card-border: #e6e6ff;
+}
+
+.dark-theme {
+  /* Тёмная тема */
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-card: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --primary-color: #8a2be2;
+  --primary-gradient: linear-gradient(135deg, #8a2be2, #9b30ff);
+  --hover-color: #3a3a3a;
+  --nav-bg: #1a1a1a;
+  --nav-text: #ffffff;
+  --card-border: #404040;
+}

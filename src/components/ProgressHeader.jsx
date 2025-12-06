@@ -1,8 +1,13 @@
 // src/components/ProgressHeader.jsx
 import './ProgressHeader.css';
 import ProgressBar from './ProgressBar';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../i18n/translations';
 
 function ProgressHeader({ technologies }) {
+  const { language } = useLanguage();
+  const t = translations[language];
+  
   // Подсчёт статистики
   const total = technologies.length;
   const completed = technologies.filter(tech => tech.status === 'completed').length;
@@ -11,19 +16,19 @@ function ProgressHeader({ technologies }) {
 
   return (
     <div className="progress-header">
-      <h2>Прогресс изучения</h2>
+      <h2>{t.progressHeader.title}</h2>
       
       <div className="stats">
         <div className="stat">
-          <span className="stat-label">Всего технологий:</span>
+          <span className="stat-label">{t.progressHeader.totalTechnologies}:</span>
           <span className="stat-value">{total}</span>
         </div>
         <div className="stat">
-          <span className="stat-label">Изучено:</span>
+          <span className="stat-label">{t.progressHeader.studied}:</span>
           <span className="stat-value">{completed}</span>
         </div>
         <div className="stat">
-          <span className="stat-label">В процессе:</span>
+          <span className="stat-label">{t.progressHeader.inProgress}:</span>
           <span className="stat-value">{inProgress}</span>
         </div>
       </div>
@@ -31,7 +36,7 @@ function ProgressHeader({ technologies }) {
       {/* Используем переиспользуемый ProgressBar */}
       <ProgressBar
         progress={percentage}
-        label="Общий прогресс"
+        label={t.progressHeader.overallProgress}
         color="#8a2be2"
         height={20}
         animated={true}
@@ -40,7 +45,7 @@ function ProgressHeader({ technologies }) {
       />
 
       <div className="progress-text">
-        {completed} из {total} технологий изучено
+        {completed} {t.progressHeader.studiedOutOf} {total} {t.progressHeader.technologies}
       </div>
     </div>
   );

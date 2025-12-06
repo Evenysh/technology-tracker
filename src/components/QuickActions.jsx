@@ -1,15 +1,23 @@
 // src/components/QuickActions.jsx
 import './QuickActions.css';
 import { useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTechnologies } from '../contexts/TechnologiesContext';
+import { translations } from '../i18n/translations';
 import Modal from './Modal';
 
 function QuickActions({ 
-  technologies, 
   onMarkAllCompleted, 
   onResetAll,
   onToggleStatus
 }) {
+  const { language } = useLanguage();
+  const { technologies } = useTechnologies(); // ← ВОТ ТУТ ИМЯ 'technologies'
+  const t = translations[language];
+  
   const [showExportModal, setShowExportModal] = useState(false);
+  
+  // Используем technologies из контекста
   const notStartedCount = technologies.filter(t => t.status === 'not-started').length;
   const completedCount = technologies.filter(t => t.status === 'completed').length;
   const inProgressCount = technologies.filter(t => t.status === 'in-progress').length;
@@ -50,7 +58,7 @@ function QuickActions({
     const notStartedTechs = technologies.filter(tech => tech.status === 'not-started');
     
     if (notStartedTechs.length === 0) {
-      alert('Все технологии уже начаты или завершены!');
+      alert(t.quickActions.allStarted);
       return;
     }
 
@@ -58,40 +66,40 @@ function QuickActions({
     
     if (onToggleStatus) {
       onToggleStatus(randomTech.id);
-      alert(`Выбрана технология: "${randomTech.title}"! Статус изменён на "В процессе".`);
+      alert(`${t.quickActions.selectedTechnology}: "${randomTech.title}"! ${t.quickActions.statusChanged}.`);
     }
   };
 
   return (
     <div className="quick-actions">
-      <h3>Быстрые действия</h3>
+      <h3>{t.quickActions.title}</h3>
       
       <div className="actions-buttons">
         <button onClick={onMarkAllCompleted} className="action-btn btn-primary">
-          Отметить все как выполненные
+          {t.quickActions.markAllCompleted}
         </button>
         <button onClick={onResetAll} className="action-btn btn-secondary">
-          Сбросить все статусы
+          {t.quickActions.resetAllStatuses}
         </button>
         <button onClick={handleExport} className="action-btn btn-accent">
-          Экспорт данных
+          {t.quickActions.exportData}
         </button>
         <button onClick={pickRandomTechnology} className="action-btn btn-special">
-          Случайный выбор
+          {t.quickActions.randomPick}
         </button>
       </div>
       
       <div className="quick-stats">
         <div className="stat-item">
-          <span className="stat-label">Выполнено</span>
+          <span className="stat-label">{t.quickActions.completed}</span>
           <span className="stat-value stat-completed">{completedCount}</span>
         </div>
         <div className="stat-item">
-          <span className="stat-label">В процессе</span>
+          <span className="stat-label">{t.quickActions.inProgress}</span>
           <span className="stat-value stat-in-progress">{inProgressCount}</span>
         </div>
         <div className="stat-item">
-          <span className="stat-label">Не начато</span>
+          <span className="stat-label">{t.quickActions.notStarted}</span>
           <span className="stat-value stat-not-started">{notStartedCount}</span>
         </div>
       </div>
@@ -99,18 +107,18 @@ function QuickActions({
       <Modal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
-        title="Экспорт данных"
+        title={t.modal.exportData}
         size="small"
       >
         <div className="export-modal-content">
-          <p>Данные успешно экспортированы!</p>
-          <p>Файл автоматически скачался в формате JSON.</p>
-          <p>Всего экспортировано: <strong>{technologies.length}</strong> технологий</p>
+          <p>{t.quickActions.exportSuccess}</p>
+          <p>{t.quickActions.exportDescription}</p>
+          <p>{t.quickActions.exportedCount}: <strong>{technologies.length}</strong> {language === 'ru' ? 'технологий' : 'technologies'}</p>
           <button 
             className="modal-close-btn"
             onClick={() => setShowExportModal(false)}
           >
-            Закрыть
+            {t.quickActions.close}
           </button>
         </div>
       </Modal>

@@ -43,8 +43,9 @@
 
 .progress-text {
   text-align: center;
-  color: #7f8c8d;
-  font-size: 0.9em;
+  color: #9e9e9e !important;
+  font-weight: 300 !important;
+  font-size: 15px;
   margin-top: 15px;
 }
 

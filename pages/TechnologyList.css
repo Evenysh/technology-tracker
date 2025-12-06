@@ -1,0 +1,154 @@
+/* src/pages/TechnologyList.css */
+.technology-list-page {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.controls-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(106, 13, 173, 0.08);
+  border: 1px solid #e6e6ff;
+}
+
+.search-container {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid #e6e6ff;
+  border-radius: 10px;
+  font-size: 1em;
+  transition: all 0.2s;
+  background: #f8f6ff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #8a2be2;
+  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+}
+
+.search-count {
+  font-weight: 600;
+  color: #6a0dad;
+  white-space: nowrap;
+}
+
+.technologies-container {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(106, 13, 173, 0.08);
+  border: 1px solid #e6e6ff;
+  min-height: 400px;
+}
+
+.technologies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  font-size: 4em;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.empty-state h3 {
+  color: #4B0082;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 1.1em;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(106, 13, 173, 0.08);
+  border: 1px solid #e6e6ff;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-stats {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #4B0082;
+}
+
+.stat-value.completed {
+  color: #2e7d32;
+}
+
+.stat-value.in-progress {
+  color: #ef6c00;
+}
+
+.stat-value.not-started {
+  color: #616161;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-link {
+  color: #6a0dad;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #f0f0ff;
+  transition: all 0.2s;
+}
+
+.footer-link:hover {
+  background: #e6e6ff;
+  transform: translateY(-2px);
+}
