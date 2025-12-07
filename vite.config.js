@@ -4,8 +4,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/technology-tracker/',
   server: {
-    port: 3000,
-    open: true
+    open: true  // ← браузер откроется автоматически при запуске dev
   }
 })

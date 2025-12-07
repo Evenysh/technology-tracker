@@ -1,7 +1,7 @@
 // src/App.jsx
 import './App.css';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Добавили Navigate
 import { useLanguage } from './contexts/LanguageContext';
 import { useTechnologies } from './contexts/TechnologiesContext';
 import { translations } from './i18n/translations';
@@ -54,93 +54,99 @@ function AppContent() {
   );
 
   return (
-    <Router>
-      <div className="App">
-        <Navigation />
+    <div className="App">
+      <Navigation />
+      
+      <Routes>
+        {/* РЕДИРЕКТ с корня на главную страницу */}
+        <Route path="/" element={<Navigate to="/home" replace />} />
         
-        <Routes>
-          {/* Главная страница */}
-          <Route path="/" element={
-            <div>
-              <ProgressHeader technologies={technologies} />
-              
-              <QuickActions 
-                onMarkAllCompleted={markAllCompleted}
-                onResetAll={resetAllStatuses}
-                onToggleStatus={toggleStatus}
-              />
+        {/* Главная страница */}
+        <Route path="/home" element={
+          <div>
+            <ProgressHeader technologies={technologies} />
+            
+            <QuickActions 
+              onMarkAllCompleted={markAllCompleted}
+              onResetAll={resetAllStatuses}
+              onToggleStatus={toggleStatus}
+            />
 
-              <div className="search-box" style={{ 
-                margin: '20px 0', 
-                padding: '15px', 
-                backgroundColor: '#f8f9fa', 
-                borderRadius: '8px' 
-              }}>
-                <input
-                  type="text"
-                  placeholder={t.home.searchPlaceholder}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{
-                    padding: '10px',
-                    width: '300px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    marginRight: '10px'
-                  }}
-                />
-                <span style={{ color: '#666' }}>
-                  {t.home.found}: <strong>{filteredTechnologies.length}</strong> {t.home.of} {technologies.length}
-                </span>
-              </div>
-
-              <FilterButtons 
-                activeFilter={activeFilter}
-                onFilterChange={setActiveFilter}
+            <div className="search-box" style={{ 
+              margin: '20px 0', 
+              padding: '15px', 
+              backgroundColor: '#f8f9fa', 
+              borderRadius: '8px' 
+            }}>
+              <input
+                type="text"
+                placeholder={t.home.searchPlaceholder}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  padding: '10px',
+                  width: '300px',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  marginRight: '10px'
+                }}
               />
-              
-              <div className="technologies-list">
-                {filteredTechnologies.length > 0 ? (
-                  filteredTechnologies.map(tech => (
-                    <TechnologyCard
-                      key={tech.id}
-                      id={tech.id}
-                      title={tech.title}
-                      description={tech.description}
-                      status={tech.status}
-                      notes={tech.notes}
-                      onStatusChange={toggleStatus}
-                      onNotesChange={updateNotes}
-                    />
-                  ))
-                ) : (
-                  <p style={{ textAlign: 'center', color: '#666', padding: '40px' }}>
-                    {t.home.noTechnologies}
-                  </p>
-                )}
-              </div>
+              <span style={{ color: '#666' }}>
+                {t.home.found}: <strong>{filteredTechnologies.length}</strong> {t.home.of} {technologies.length}
+              </span>
             </div>
-          } />
-          
-          {/* Страница статистики */}
-          <Route path="/stats" element={<Stats />} />
-          
-          {/* Страница настроек */}
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
-      </div>
-    </Router>
+
+            <FilterButtons 
+              activeFilter={activeFilter}
+              onFilterChange={setActiveFilter}
+            />
+            
+            <div className="technologies-list">
+              {filteredTechnologies.length > 0 ? (
+                filteredTechnologies.map(tech => (
+                  <TechnologyCard
+                    key={tech.id}
+                    id={tech.id}
+                    title={tech.title}
+                    description={tech.description}
+                    status={tech.status}
+                    notes={tech.notes}
+                    onStatusChange={toggleStatus}
+                    onNotesChange={updateNotes}
+                  />
+                ))
+              ) : (
+                <p style={{ textAlign: 'center', color: '#666', padding: '40px' }}>
+                  {t.home.noTechnologies}
+                </p>
+              )}
+            </div>
+          </div>
+        } />
+        
+        {/* Страница статистики */}
+        <Route path="/stats" element={<Stats />} />
+        
+        {/* Страница настроек */}
+        <Route path="/settings" element={<Settings />} />
+
+        {/* Fallback маршрут для несуществующих путей */}
+        <Route path="*" element={<Navigate to="/home" replace />} />
+      </Routes>
+    </div>
   );
 }
 
 // Основной компонент App, который оборачивает всё в провайдеры
 function App() {
   return (
-    <TechnologiesProvider>
-      <LanguageProvider>
-        <AppContent />
-      </LanguageProvider>
-    </TechnologiesProvider>
+    <Router>
+      <TechnologiesProvider>
+        <LanguageProvider>
+          <AppContent />
+        </LanguageProvider>
+      </TechnologiesProvider>
+    </Router>
   );
 }
 

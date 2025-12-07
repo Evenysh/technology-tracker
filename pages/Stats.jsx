@@ -91,9 +91,9 @@ function Stats() {
               className="pie-chart-circle"
               style={{
                 background: `conic-gradient(
-                  #4CAF50 0% ${completedPercent}%,
-                  #FF9800 ${completedPercent}% ${completedPercent + inProgressPercent}%,
-                  #F44336 ${completedPercent + inProgressPercent}% 100%
+                  #322c76ff 0% ${completedPercent}%,
+                  #8073adff ${completedPercent}% ${completedPercent + inProgressPercent}%,
+                  #d99dd5ff ${completedPercent + inProgressPercent}% 100%
                 )`
               }}
             ></div>
