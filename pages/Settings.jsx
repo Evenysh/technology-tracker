@@ -6,7 +6,7 @@ import { translations } from '../src/i18n/translations';
 import './Settings.css';
 
 function Settings() {
-  const { technologies, resetAllStatuses, resetAllData } = useTechnologies(); // Добавили resetAllData
+  const { technologies, resetAllStatuses, resetAllData, updateDescriptionsForLanguage } = useTechnologies();
   const { language, changeLanguage } = useLanguage();
   const t = translations[language];
   
@@ -76,8 +76,8 @@ function Settings() {
         ? 'Вы уверены? Это удалит ВСЕ технологии, заметки и сбросит настройки.' 
         : 'Are you sure? This will delete ALL technologies, notes and reset settings.'
     )) {
-      // 1. Сбрасываем все данные в контексте
-      resetAllData();
+      // 1. Сбрасываем все данные в контексте (с указанием текущего языка)
+      resetAllData(language);
       
       // 2. Удаляем из localStorage
       localStorage.removeItem('appSettings');
@@ -174,6 +174,40 @@ function Settings() {
     input.click();
   };
 
+  // ИСПРАВЛЕННАЯ ФУНКЦИЯ СМЕНЫ ЯЗЫКА
+  const handleLanguageChange = (e) => {
+    const newLanguage = e.target.value;
+    
+    // Если язык не изменился, ничего не делаем
+    if (newLanguage === language) {
+      return;
+    }
+    
+    // Показываем предупреждение
+    const confirmMessage = newLanguage === 'ru' 
+      ? 'Вы уверены, что хотите сменить язык на русский?'
+      : 'Are you sure you want to switch to English?';
+    
+    if (window.confirm(confirmMessage)) {
+      // Меняем язык
+      handleSettingChange('language', newLanguage);
+      
+      // Принудительно обновляем описания технологий
+      if (updateDescriptionsForLanguage) {
+        updateDescriptionsForLanguage(newLanguage);
+      }
+      
+      // Показываем сообщение
+      alert(newLanguage === 'ru' 
+        ? '✅ Язык изменён на русский.' 
+        : '✅ Language changed to English.'
+      );
+    } else {
+      // Если пользователь отменил, возвращаем предыдущее значение
+      e.target.value = language;
+    }
+  };
+
   return (
     <div className="settings-container">
       <div className="settings-header">
@@ -214,11 +248,25 @@ function Settings() {
               <select
                 className="select-dropdown"
                 value={settings.language}
-                onChange={(e) => handleSettingChange('language', e.target.value)}
+                onChange={handleLanguageChange}
               >
                 <option value="ru">{t.settings.russian}</option>
                 <option value="en">{t.settings.english}</option>
               </select>
+              <div className="language-actions">
+                <button 
+                  className="update-descriptions-btn"
+                  onClick={() => {
+                    updateDescriptionsForLanguage(settings.language);
+                    alert(settings.language === 'ru' 
+                      ? '✅ Описания технологий обновлены на русский язык!' 
+                      : '✅ Technology descriptions updated to English!'
+                    );
+                  }}
+                >
+                  {language === 'ru' ? 'Обновить описания' : 'Update descriptions'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

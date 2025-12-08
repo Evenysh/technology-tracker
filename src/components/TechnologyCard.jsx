@@ -1,78 +1,131 @@
 // src/components/TechnologyCard.jsx
+import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../i18n/translations';
 import './TechnologyCard.css';
-import { useState } from 'react';
 
 function TechnologyCard({ 
   id, 
   title, 
   description, 
   status, 
-  notes,
+  notes, 
   onStatusChange, 
-  onNotesChange
+  onNotesChange,
+  onDelete
 }) {
   const { language } = useLanguage();
-  const t = translations[language];
-  
+  const t = translations[language].technologyCard;
   const [showNotes, setShowNotes] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleClick = () => {
-    if (onStatusChange) {
-      onStatusChange(id);
+  // Клик по карточке меняет статус
+  const handleCardClick = (e) => {
+    // Если клик был по кнопке удаления или textarea - не меняем статус
+    if (e.target.closest('.delete-btn') || e.target.tagName === 'TEXTAREA') {
+      return;
     }
+    onStatusChange(id);
   };
 
   const handleNotesChange = (e) => {
-    if (onNotesChange) {
-      onNotesChange(id, e.target.value);
+    onNotesChange(id, e.target.value);
+  };
+
+  // Функция для удаления технологии (останавливает всплытие события)
+  const handleDelete = (e) => {
+    e.stopPropagation(); // Останавливаем всплытие, чтобы не сработал handleCardClick
+    
+    if (!window.confirm(language === 'ru' 
+      ? `Вы уверены, что хотите удалить технологию "${title}"?`
+      : `Are you sure you want to delete technology "${title}"?`
+    )) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      onDelete(id);
+      
+      if (language === 'ru') {
+        alert(`✅ Технология "${title}" успешно удалена!`);
+      } else {
+        alert(`✅ Technology "${title}" successfully deleted!`);
+      }
+    } catch (error) {
+      console.error('Ошибка при удалении:', error);
+      if (language === 'ru') {
+        alert('❌ Ошибка при удалении технологии');
+      } else {
+        alert('❌ Error deleting technology');
+      }
+    } finally {
+      setIsDeleting(false);
     }
   };
 
-  const statusText = {
-    'not-started': t.technologyCard.notStarted,
-    'in-progress': t.technologyCard.inProgress,
-    'completed': t.technologyCard.completed
+  // Клик по кнопке заметок (останавливает всплытие)
+  const handleNotesToggle = (e) => {
+    e.stopPropagation();
+    setShowNotes(!showNotes);
   };
 
-  const currentStatus = status || 'not-started';
+  const getStatusText = () => {
+    switch(status) {
+      case 'not-started': return t.notStarted;
+      case 'in-progress': return t.inProgress;
+      case 'completed': return t.completed;
+      default: return status;
+    }
+  };
 
   return (
     <div 
-      className={`technology-card ${currentStatus}`}
-      title={t.technologyCard.clickToChangeStatus}
+      className={`technology-card ${status} ${isDeleting ? 'deleting' : ''}`}
+      onClick={handleCardClick}
+      title={t.clickToChangeStatus}
     >
-      <div className="card-main" onClick={handleClick}>
+      <div className="card-header">
         <h3>{title}</h3>
-        <p>{description}</p>
-        <div className="status-indicator">
-          {t.technologyCard.status}: {statusText[currentStatus] || t.technologyCard.notStarted}
+        <div className="header-right">
+          <span className="status-indicator">
+            {getStatusText()}
+          </span>
+          <button 
+            className="delete-btn"
+            onClick={handleDelete}
+            disabled={isDeleting}
+            title={language === 'ru' ? 'Удалить технологию' : 'Delete technology'}
+          >
+            {isDeleting ? '🗑️...' : '🗑️'}
+          </button>
         </div>
       </div>
+
+      <p className="description">{description}</p>
 
       <div className="notes-section">
         <button 
           className="notes-toggle"
-          onClick={() => setShowNotes(!showNotes)}
+          onClick={handleNotesToggle}
         >
-          {showNotes ? t.technologyCard.hideNotes : t.technologyCard.showNotes} 
-          {notes && ` (${notes.length} ${language === 'ru' ? 'симв.' : 'char.'})`}
+          {showNotes ? t.hideNotes : t.showNotes}
         </button>
-
+        
         {showNotes && (
-          <div className="notes-editor">
-            <h4>{t.technologyCard.myNotes}</h4>
+          <div className="notes-editor" onClick={(e) => e.stopPropagation()}>
+            <h4>{t.myNotes}</h4>
             <textarea
-              value={notes || ''}
+              value={notes}
               onChange={handleNotesChange}
-              placeholder={t.technologyCard.notesPlaceholder}
+              placeholder={t.notesPlaceholder}
               rows="3"
             />
             <div className="notes-hint">
-              {notes && notes.length > 0 
-                ? `${t.technologyCard.notesSaved} (${notes.length} ${language === 'ru' ? 'символов' : 'characters'})` 
-                : t.technologyCard.addNote}
+              {notes.length > 0 
+                ? `${t.notesSaved} (${notes.length} ${language === 'ru' ? 'символов' : 'chars'})` 
+                : t.addNote
+              }
             </div>
           </div>
         )}

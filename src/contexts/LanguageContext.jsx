@@ -1,26 +1,49 @@
 // src/contexts/LanguageContext.jsx
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { useTechnologies } from './TechnologiesContext';
 
 const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
+  const { updateDescriptionsForLanguage } = useTechnologies();
   const [language, setLanguage] = useState(() => {
-    const saved = localStorage.getItem('appSettings');
-    if (saved) {
-      const settings = JSON.parse(saved);
-      return settings.language || 'ru';
+    const savedSettings = localStorage.getItem('appSettings');
+    if (savedSettings) {
+      try {
+        const settings = JSON.parse(savedSettings);
+        return settings.language || 'ru';
+      } catch (e) {
+        return 'ru';
+      }
     }
     return 'ru';
   });
 
-  const changeLanguage = (lang) => {
-    setLanguage(lang);
-    // Обновляем настройки в localStorage
-    const saved = localStorage.getItem('appSettings');
-    const settings = saved ? JSON.parse(saved) : {};
-    settings.language = lang;
+  // Функция смены языка с обновлением описаний
+  const changeLanguage = useCallback((newLanguage) => {
+    if (newLanguage === language) return; // Если язык не изменился, ничего не делаем
+    
+    setLanguage(newLanguage);
+    
+    // Обновляем язык в localStorage
+    const savedSettings = localStorage.getItem('appSettings');
+    let settings = {};
+    if (savedSettings) {
+      try {
+        settings = JSON.parse(savedSettings);
+      } catch (e) {
+        settings = {};
+      }
+    }
+    
+    settings.language = newLanguage;
     localStorage.setItem('appSettings', JSON.stringify(settings));
-  };
+    
+    // Обновляем описания технологий на новом языке
+    if (updateDescriptionsForLanguage) {
+      updateDescriptionsForLanguage(newLanguage);
+    }
+  }, [language, updateDescriptionsForLanguage]);
 
   return (
     <LanguageContext.Provider value={{ language, changeLanguage }}>

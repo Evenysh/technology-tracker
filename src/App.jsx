@@ -14,6 +14,8 @@ import Stats from '../pages/Stats';
 import Settings from '../pages/Settings';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { TechnologiesProvider } from './contexts/TechnologiesContext';
+import ApiSearch from './components/ApiSearch';
+
 
 // Создаём отдельный компонент для контента приложения
 function AppContent() {
@@ -26,6 +28,7 @@ function AppContent() {
     toggleStatus,
     markAllCompleted,
     resetAllStatuses,
+    removeTechnology,
     progress
   } = useTechnologies();
 
@@ -60,6 +63,7 @@ function AppContent() {
       <Routes>
         {/* РЕДИРЕКТ с корня на главную страницу */}
         <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/api-search" element={<ApiSearch />} />
         
         {/* Главная страница */}
         <Route path="/home" element={
@@ -113,6 +117,7 @@ function AppContent() {
                     notes={tech.notes}
                     onStatusChange={toggleStatus}
                     onNotesChange={updateNotes}
+                    onDelete={removeTechnology}
                   />
                 ))
               ) : (

@@ -9,16 +9,21 @@ function Navigation() {
   const { language } = useLanguage();
   const t = translations[language];
   
+  // Обновленный список навигационных элементов
   const navItems = [
-    { path: '/', label: t.navigation.home, exact: true },
-    { path: '/stats', label: t.navigation.stats },
-    { path: '/settings', label: t.navigation.settings },
+    { path: '/', label: t.navigation.home, exact: true, icon: '🏠' },
+    { path: '/stats', label: t.navigation.stats, icon: '📊' },
+    { path: '/api-search', label: t.navigation.apiSearch || 'API Поиск', icon: '🔍' }, // Новая ссылка
+    { path: '/settings', label: t.navigation.settings, icon: '⚙️' },
   ];
 
   return (
     <nav className="navigation">
       <div className="nav-logo">
-        <h2>{t.navigation.appName}</h2>
+        <h2>
+          <span role="img" aria-label="rocket" style={{ marginRight: '10px' }}></span>
+          {t.navigation.appName || 'Трекер технологий'}
+        </h2>
       </div>
       
       <div className="nav-links">
@@ -31,8 +36,10 @@ function Navigation() {
                 ? 'active'
                 : ''
             }`}
+            title={item.label}
           >
-            {item.label}
+            {item.icon && <span className="nav-icon">{item.icon}</span>}
+            <span className="nav-label">{item.label}</span>
           </Link>
         ))}
       </div>

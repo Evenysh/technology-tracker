@@ -2,10 +2,11 @@
 export const translations = {
   ru: {
     navigation: {
-      home: '🏠 Главная',
-      stats: '📊 Статистика',
-      settings: '⚙️ Настройки',
-      appName: '🧠 Трекер технологий'
+      home: 'Главная',
+      stats: 'Статистика',
+      apiSearch: 'API Поиск', // Добавлено
+      settings: 'Настройки',
+      appName: 'Трекер технологий'
     },
     home: {
       searchPlaceholder: 'Поиск технологий...',
@@ -60,7 +61,7 @@ export const translations = {
       exportData: 'Экспорт данных'
     },
     stats: {
-      title: '📊 Статистика изучения',
+      title: 'Статистика изучения',
       subtitle: 'Анализ вашего прогресса в изучении технологий',
       totalTechnologies: 'Всего технологий',
       inYourTracker: 'в вашем трекере',
@@ -70,12 +71,12 @@ export const translations = {
       activelyStudied: 'активно изучаются',
       notStarted: 'Не начато',
       waiting: 'ждут своего часа',
-      overallProgress: '📈 Общий прогресс',
+      overallProgress: 'Общий прогресс',
       studiedOutOf: 'изучено из',
       technologies: 'технологий',
-      statusDistribution: '🥧 Распределение по статусам',
+      statusDistribution: 'Распределение по статусам',
       studiedTech: 'техн.',
-      additionalInfo: '📊 Дополнительная информация',
+      additionalInfo: 'Дополнительная информация',
       progressLevel: 'Уровень прогресса',
       basedOnPercent: 'На основе процента изученных технологий',
       nextGoal: 'Следующая цель',
@@ -90,6 +91,32 @@ export const translations = {
       intermediate: 'Продвинутый',
       expert: 'Эксперт'
     },
+    apiSearch: {
+      title: 'Поиск технологий в API',
+      subtitle: 'Найдите и добавьте технологии для изучения',
+      searchPlaceholder: 'Введите название технологии...',
+      categoryFilter: 'Категория:',
+      searchLoading: '⌛ Поиск...',
+      resultsFound: 'Найдено технологий:',
+      noResults: 'По запросу "{{query}}" ничего не найдено',
+      categories: {
+        all: 'Все',
+        frontend: 'Фронтенд',
+        backend: 'Бэкенд',
+        database: 'Базы данных',
+        tool: 'Инструменты',
+        language: 'Языки'
+      },
+      popularity: {
+        high: ' Популярно',
+        medium: 'Средне',
+        low: 'Нишевое'
+      },
+      techCategory: 'Категория:',
+      officialWebsite: '🌐 Официальный сайт',
+      addToTracker: '➕ Добавить в трекер',
+      addedSuccess: 'Технология "{{name}}" добавлена в трекер!'
+    },
     settings: {
       title: 'Настройки приложения',
       subtitle: 'Управление данными и настройками трекера технологий',
@@ -99,7 +126,6 @@ export const translations = {
       light: 'Светлая',
       dark: 'Тёмная',
       language: 'Язык интерфейса',
-      languageDesc: 'Язык меню и текстов',
       russian: 'Русский',
       english: 'English',
       autoSave: 'Автосохранение',
@@ -109,7 +135,6 @@ export const translations = {
       importData: '📤 Импорт данных',
       resetProgress: '🔄 Сбросить прогресс',
       clearData: '🗑️ Очистить все данные',
-      dataStorage: 'Данные хранятся в вашем браузере (localStorage)',
       aboutApp: 'О приложении',
       version: 'Версия',
       technologiesCount: 'Технологий в трекере',
@@ -119,7 +144,7 @@ export const translations = {
       myGitHub: '📚 Мой GitHub',
       resetSettingsTitle: 'Сброс настроек',
       resetSettingsDesc: 'Вернуть все настройки к значениям по умолчанию',
-      resetSettings: '🔄 Сбросить настройки',
+      resetSettings: 'Сбросить настройки',
       cancel: 'Отмена',
       save: '💾 Сохранить настройки'
     }
@@ -127,10 +152,11 @@ export const translations = {
 
   en: {
     navigation: {
-      home: '🏠 Home',
-      stats: '📊 Statistics',
-      settings: '⚙️ Settings',
-      appName: '🧠 Technology Tracker'
+      home: 'Home',
+      stats: 'Statistics',
+      apiSearch: 'API Search',
+      settings: 'Settings',
+      appName: 'Technology Tracker'
     },
     home: {
       searchPlaceholder: 'Search technologies...',
@@ -185,7 +211,7 @@ export const translations = {
       exportData: 'Export Data'
     },
     stats: {
-      title: '📊 Learning Statistics',
+      title: 'Learning Statistics',
       subtitle: 'Analysis of your technology learning progress',
       totalTechnologies: 'Total technologies',
       inYourTracker: 'in your tracker',
@@ -195,7 +221,7 @@ export const translations = {
       activelyStudied: 'actively studied',
       notStarted: 'Not started',
       waiting: 'awaiting',
-      overallProgress: '📈 Overall progress',
+      overallProgress: 'Overall progress',
       studiedOutOf: 'studied out of',
       technologies: 'technologies',
       statusDistribution: 'Status distribution',
@@ -215,6 +241,32 @@ export const translations = {
       intermediate: 'Intermediate',
       expert: 'Expert'
     },
+    apiSearch: {
+      title: 'API Technology Search',
+      subtitle: 'Find and add technologies to study',
+      searchPlaceholder: 'Enter technology name...',
+      categoryFilter: 'Category:',
+      searchLoading: '⌛ Searching...',
+      resultsFound: 'Technologies found:',
+      noResults: 'No results found for "{{query}}"',
+      categories: {
+        all: 'All',
+        frontend: 'Frontend',
+        backend: 'Backend',
+        database: 'Databases',
+        tool: 'Tools',
+        language: 'Languages'
+      },
+      popularity: {
+        high: 'Popular',
+        medium: 'Medium',
+        low: 'Niche'
+      },
+      techCategory: 'Category:',
+      officialWebsite: '🌐 Official website',
+      addToTracker: '➕ Add to tracker',
+      addedSuccess: 'Technology "{{name}}" added to tracker!'
+    },
     settings: {
       title: 'Application Settings',
       subtitle: 'Manage data and settings of the technology tracker',
@@ -224,7 +276,6 @@ export const translations = {
       light: 'Light',
       dark: 'Dark',
       language: 'Interface language',
-      languageDesc: 'Menu and texts language',
       russian: 'Russian',
       english: 'English',
       autoSave: 'Auto-save',
@@ -234,7 +285,6 @@ export const translations = {
       importData: '📤 Import data',
       resetProgress: '🔄 Reset progress',
       clearData: '🗑️ Clear all data',
-      dataStorage: 'Data is stored in your browser (localStorage)',
       aboutApp: 'About the app',
       version: 'Version',
       technologiesCount: 'Technologies in tracker',
@@ -244,7 +294,7 @@ export const translations = {
       myGitHub: '📚 My GitHub',
       resetSettingsTitle: 'Reset Settings',
       resetSettingsDesc: 'Reset all settings to default values',
-      resetSettings: '🔄 Reset settings',
+      resetSettings: 'Reset settings',
       cancel: 'Cancel',
       save: '💾 Save settings'
     }

@@ -9,11 +9,18 @@
   transition: all 0.3s ease;
   cursor: pointer;
   background: white;
+  position: relative;
 }
 
 .technology-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.technology-card.deleting {
+  opacity: 0.6;
+  background: linear-gradient(45deg, #ffeaea 0%, #fff0f0 100%);
+  border: 2px dashed #ff6b6b !important;
 }
 
 /* Стили по статусам */
@@ -33,9 +40,24 @@
 }
 
 /* Заголовок и описание */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .technology-card h3 {
-  margin: 0 0 10px 0;
+  margin: 0;
   color: #2c3e50;
+  font-size: 1.3em;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .technology-card p {
@@ -46,10 +68,13 @@
 /* Индикатор статуса */
 .status-indicator {
   font-weight: bold;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
   display: inline-block;
-  font-size: 0.9em;
+  font-size: 0.85em;
+  min-width: 100px;
+  text-align: center;
+  user-select: none;
 }
 
 .completed .status-indicator {
@@ -65,6 +90,41 @@
 .not-started .status-indicator {
   background-color: #adb5bd;
   color: white;
+}
+
+/* ========== КНОПКА УДАЛЕНИЯ ========== */
+.delete-btn {
+  background: none;
+  border: 2px solid #fed7d7;
+  color: #e53e3e;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10; /* Чтобы кнопка была выше и не перехватывала клик карточки */
+}
+
+.delete-btn:hover {
+  background: #fed7d7;
+  border-color: #fc8181;
+  transform: scale(1.05);
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+}
+
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f7fafc;
 }
 
 /* ========== КНОПКА ЗАМЕТОК ========== */
@@ -129,6 +189,7 @@
   background-color: #fafafa;
   border-radius: 8px;
   border: 1px solid #eaeaea;
+  cursor: auto; /* Убираем курсор-указатель в области заметок */
 }
 
 .notes-editor h4 {
@@ -147,6 +208,7 @@
   min-height: 80px;
   font-family: inherit;
   transition: border 0.2s;
+  cursor: text;
 }
 
 .notes-editor textarea:focus {
@@ -165,23 +227,48 @@
   display: inline-block;
 }
 
-/* Разделение кликабельной области и заметок */
-.card-main {
-  margin-bottom: 10px;
+/* Анимация удаления */
+@keyframes slideOutRight {
+  0% { 
+    transform: translateX(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(50px);
+    opacity: 0.3;
+  }
+  100% { 
+    transform: translateX(100px);
+    opacity: 0;
+  }
 }
 
-/* Временно добавьте в TechnologyCard.css */
-.technology-card.completed {
-  border-color: #8a2be2 !important;
-  background-color: #f3e8ff !important;
+.technology-card.deleting {
+  animation: slideOutRight 0.4s ease-out forwards;
 }
 
-.technology-card.in-progress {
-  border-color: #d63384 !important;
-  background-color: #ffe8f0 !important;
-}
-
-.technology-card.not-started {
-  border-color: #adb5bd !important;
-  background-color: #f8f9fa !important;
+/* Улучшение для мобильных устройств */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .delete-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .status-indicator {
+    min-width: 90px;
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
 }
