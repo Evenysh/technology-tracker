@@ -1,7 +1,7 @@
 // src/App.jsx
 import './App.css';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Добавили Navigate
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useLanguage } from './contexts/LanguageContext';
 import { useTechnologies } from './contexts/TechnologiesContext';
 import { translations } from './i18n/translations';
@@ -15,7 +15,6 @@ import Settings from '../pages/Settings';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { TechnologiesProvider } from './contexts/TechnologiesContext';
 import ApiSearch from './components/ApiSearch';
-
 
 // Создаём отдельный компонент для контента приложения
 function AppContent() {
@@ -115,6 +114,12 @@ function AppContent() {
                     description={tech.description}
                     status={tech.status}
                     notes={tech.notes}
+                    // ВАЖНО: ПЕРЕДАЕМ ВСЕ НОВЫЕ ПОЛЯ ДЛЯ СРОКОВ!
+                    startDate={tech.startDate}
+                    deadline={tech.deadline}
+                    estimatedHours={tech.estimatedHours}
+                    priority={tech.priority}
+                    deadlineNotes={tech.deadlineNotes}
                     onStatusChange={toggleStatus}
                     onNotesChange={updateNotes}
                     onDelete={removeTechnology}

@@ -6,17 +6,24 @@ import { translations } from '../src/i18n/translations';
 import './Settings.css';
 
 function Settings() {
-  const { technologies, resetAllStatuses, resetAllData, updateDescriptionsForLanguage } = useTechnologies();
+  const {
+    technologies,
+    resetAllStatuses,
+    resetAllData,
+    updateDescriptionsForLanguage,
+  } = useTechnologies();
   const { language, changeLanguage } = useLanguage();
   const t = translations[language];
-  
+
   // Загружаем настройки только один раз при монтировании
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem('appSettings');
-    return saved ? JSON.parse(saved) : {
-      theme: 'light',
-      language: 'ru'
-    };
+    return saved
+      ? JSON.parse(saved)
+      : {
+          theme: 'light',
+          language: 'ru',
+        };
   });
 
   // ПРИМЕНЯЕМ ТЕМУ ПРИ ИЗМЕНЕНИИ settings.theme
@@ -31,10 +38,10 @@ function Settings() {
   const handleSettingChange = (key, value) => {
     const newSettings = {
       ...settings,
-      [key]: value
+      [key]: value,
     };
     setSettings(newSettings);
-    
+
     // Меняем язык в контексте при изменении
     if (key === 'language') {
       changeLanguage(value);
@@ -44,7 +51,7 @@ function Settings() {
   const handleResetSettings = () => {
     const defaultSettings = {
       theme: 'light',
-      language: 'ru'
+      language: 'ru',
     };
     setSettings(defaultSettings);
     changeLanguage('ru');
@@ -69,44 +76,49 @@ function Settings() {
     }
   };
 
-  // Управление данными - ИСПРАВЛЕННАЯ ВЕРСИЯ
+  // Управление данными
   const handleClearData = () => {
-    if (window.confirm(
-      language === 'ru' 
-        ? 'Вы уверены? Это удалит ВСЕ технологии, заметки и сбросит настройки.' 
-        : 'Are you sure? This will delete ALL technologies, notes and reset settings.'
-    )) {
-      // 1. Сбрасываем все данные в контексте (с указанием текущего языка)
-      resetAllData(language);
-      
-      // 2. Удаляем из localStorage
+    if (
+      window.confirm(
+        language === 'ru'
+          ? 'Вы уверены? Это удалит ВСЕ технологии, заметки и сбросит настройки.'
+          : 'Are you sure? This will delete ALL technologies, notes and reset settings.'
+      )
+    ) {
+      // 1. Сбрасываем все данные в контексте
+      resetAllData();
+
+      // 2. Удаляем из localStorage сохранённые настройки
       localStorage.removeItem('appSettings');
-      
+
       // 3. Устанавливаем светлую тему
       document.documentElement.classList.remove('dark-theme');
-      
-      // 4. Сбрасываем язык
+
+      // 4. Сбрасываем язык в контексте
       changeLanguage('ru');
-      
+
       // 5. Сбрасываем локальное состояние настроек
       setSettings({
         theme: 'light',
-        language: 'ru'
+        language: 'ru',
       });
-      
-      alert(language === 'ru' 
-        ? 'Все данные очищены! Приложение сброшено к начальному состоянию.' 
-        : 'All data cleared! App reset to initial state.'
+
+      alert(
+        language === 'ru'
+          ? 'Все данные очищены! Приложение сброшено к начальному состоянию.'
+          : 'All data cleared! App reset to initial state.'
       );
     }
   };
 
   const handleResetProgress = () => {
-    if (window.confirm(
-      language === 'ru' 
-        ? 'Сбросить прогресс всех технологий?' 
-        : 'Reset progress of all technologies?'
-    )) {
+    if (
+      window.confirm(
+        language === 'ru'
+          ? 'Сбросить прогресс всех технологий?'
+          : 'Reset progress of all technologies?'
+      )
+    ) {
       resetAllStatuses();
       alert(language === 'ru' ? 'Прогресс сброшен!' : 'Progress reset!');
     }
@@ -117,17 +129,21 @@ function Settings() {
       technologies: technologies,
       settings: settings,
       exportedAt: new Date().toISOString(),
-      version: '1.0.0'
+      version: '1.0.0',
     };
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `technology-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `technology-tracker-backup-${
+      new Date().toISOString().split('T')[0]
+    }.json`;
     a.click();
     URL.revokeObjectURL(url);
-    
+
     alert(language === 'ru' ? 'Данные экспортированы!' : 'Data exported!');
   };
 
@@ -135,75 +151,78 @@ function Settings() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    
+
     input.onchange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      
+
       const reader = new FileReader();
       reader.onload = (event) => {
         try {
           const data = JSON.parse(event.target.result);
-          
+
           if (data.technologies) {
-            localStorage.setItem('technologies', JSON.stringify(data.technologies));
+            localStorage.setItem(
+              'technologies',
+              JSON.stringify(data.technologies)
+            );
             alert(
-              language === 'ru' 
-                ? 'Данные импортированы! Перезагрузите страницу.' 
+              language === 'ru'
+                ? 'Данные импортированы! Перезагрузите страницу.'
                 : 'Data imported! Please refresh the page.'
             );
             window.location.reload();
           } else {
             alert(
-              language === 'ru' 
-                ? 'Неверный формат файла' 
+              language === 'ru'
+                ? 'Неверный формат файла'
                 : 'Invalid file format'
             );
           }
         } catch (error) {
           alert(
-            language === 'ru' 
-              ? 'Ошибка чтения файла' 
+            language === 'ru'
+              ? 'Ошибка чтения файла'
               : 'Error reading file'
           );
         }
       };
       reader.readAsText(file);
     };
-    
+
     input.click();
   };
 
-  // ИСПРАВЛЕННАЯ ФУНКЦИЯ СМЕНЫ ЯЗЫКА
+  // ФУНКЦИЯ СМЕНЫ ЯЗЫКА + автообновление описаний
   const handleLanguageChange = (e) => {
     const newLanguage = e.target.value;
-    
+
     // Если язык не изменился, ничего не делаем
     if (newLanguage === language) {
       return;
     }
-    
-    // Показываем предупреждение
-    const confirmMessage = newLanguage === 'ru' 
-      ? 'Вы уверены, что хотите сменить язык на русский?'
-      : 'Are you sure you want to switch to English?';
-    
+
+    const confirmMessage =
+      newLanguage === 'ru'
+        ? 'Вы уверены, что хотите сменить язык на русский?'
+        : 'Are you sure you want to switch to English?';
+
     if (window.confirm(confirmMessage)) {
-      // Меняем язык
+      // Обновляем настройки (и контекст языка)
       handleSettingChange('language', newLanguage);
-      
-      // Принудительно обновляем описания технологий
+
+      // Принудительно обновляем описания технологий под выбранный язык
       if (updateDescriptionsForLanguage) {
         updateDescriptionsForLanguage(newLanguage);
       }
-      
-      // Показываем сообщение
-      alert(newLanguage === 'ru' 
-        ? '✅ Язык изменён на русский.' 
-        : '✅ Language changed to English.'
+
+      alert(
+        newLanguage === 'ru'
+          ? '✅ Язык изменён на русский.'
+          : '✅ Language changed to English.'
       );
     } else {
-      // Если пользователь отменил, возвращаем предыдущее значение
+      // Если пользователь отменил, возвращаем предыдущее значение в селекте
       e.target.value = language;
     }
   };
@@ -221,7 +240,7 @@ function Settings() {
           <div className="section-title">
             <h2>{t.settings.basicSettings}</h2>
           </div>
-          
+
           <div className="setting-item">
             <div className="setting-label">
               <h3>{t.settings.theme}</h3>
@@ -238,7 +257,7 @@ function Settings() {
               </select>
             </div>
           </div>
-          
+
           <div className="setting-item">
             <div className="setting-label">
               <h3>{t.settings.language}</h3>
@@ -253,20 +272,6 @@ function Settings() {
                 <option value="ru">{t.settings.russian}</option>
                 <option value="en">{t.settings.english}</option>
               </select>
-              <div className="language-actions">
-                <button 
-                  className="update-descriptions-btn"
-                  onClick={() => {
-                    updateDescriptionsForLanguage(settings.language);
-                    alert(settings.language === 'ru' 
-                      ? '✅ Описания технологий обновлены на русский язык!' 
-                      : '✅ Technology descriptions updated to English!'
-                    );
-                  }}
-                >
-                  {language === 'ru' ? 'Обновить описания' : 'Update descriptions'}
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -276,25 +281,34 @@ function Settings() {
           <div className="section-title">
             <h2>{t.settings.dataManagement}</h2>
           </div>
-          
+
           <div className="actions-group">
-            <button className="action-btn export-btn" onClick={handleExportData}>
+            <button
+              className="action-btn export-btn"
+              onClick={handleExportData}
+            >
               {t.settings.exportData} ({technologies.length})
             </button>
-            
-            <button className="action-btn import-btn" onClick={handleImportData}>
+
+            <button
+              className="action-btn import-btn"
+              onClick={handleImportData}
+            >
               {t.settings.importData}
             </button>
-            
-            <button className="action-btn reset-btn" onClick={handleResetProgress}>
+
+            <button
+              className="action-btn reset-btn"
+              onClick={handleResetProgress}
+            >
               {t.settings.resetProgress}
             </button>
-            
+
             <button className="action-btn clear-btn" onClick={handleClearData}>
               {t.settings.clearData}
             </button>
           </div>
-          
+
           <div className="data-info">
             <p>{t.settings.dataStorage}</p>
           </div>
@@ -305,20 +319,22 @@ function Settings() {
           <div className="section-title">
             <h2>{t.settings.aboutApp}</h2>
           </div>
-          
+
           <div className="app-info">
             <div className="info-item">
               <span className="info-label">{t.settings.version}:</span>
               <span className="info-value">1.0.0</span>
             </div>
             <div className="info-item">
-              <span className="info-label">{t.settings.technologiesCount}:</span>
+              <span className="info-label">
+                {t.settings.technologiesCount}:
+              </span>
               <span className="info-value">{technologies.length}</span>
             </div>
             <div className="info-item">
               <span className="info-label">{t.settings.studied}:</span>
               <span className="info-value">
-                {technologies.filter(t => t.status === 'completed').length}
+                {technologies.filter((t) => t.status === 'completed').length}
               </span>
             </div>
             <div className="info-item">
@@ -330,11 +346,11 @@ function Settings() {
               <span className="info-value">Evenysh</span>
             </div>
           </div>
-          
+
           <div className="app-links">
-            <a 
-              href="https://github.com/Evenysh/technology-tracker" 
-              target="_blank" 
+            <a
+              href="https://github.com/Evenysh/technology-tracker"
+              target="_blank"
               rel="noopener noreferrer"
               className="github-link"
             >
@@ -348,16 +364,13 @@ function Settings() {
           <div className="section-title">
             <h2>{t.settings.resetSettingsTitle}</h2>
           </div>
-          
+
           <div className="reset-section">
             <p className="reset-description">
               {t.settings.resetSettingsDesc}
             </p>
-            
-            <button 
-              className="reset-btn"
-              onClick={handleResetSettings}
-            >
+
+            <button className="reset-btn" onClick={handleResetSettings}>
               {t.settings.resetSettings}
             </button>
           </div>

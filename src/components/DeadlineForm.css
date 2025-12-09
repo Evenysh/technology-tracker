@@ -1,0 +1,522 @@
+/* src/components/DeadlineForm.css */
+
+/* Основной контейнер для предотвращения конфликтов с модальным окном */
+.deadline-form-container {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Сама форма */
+.deadline-form {
+  max-width: 100%;
+  margin: 0;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: none; /* Убираем тень, так как модальное окно уже имеет свою */
+}
+
+.deadline-form h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.technology-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 4px solid #3498db;
+}
+
+.technology-info h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.technology-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Группы полей формы */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.form-group label.required::after {
+  content: " *";
+  color: #e74c3c;
+}
+
+/* Поля ввода */
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  background: white;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-control.error {
+  border-color: #e74c3c;
+  background-color: #fff5f5;
+}
+
+.form-control.error:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* Специальные стили для date input */
+.form-control[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 44px; /* Для лучшего касания на мобильных */
+}
+
+/* Стили для textarea */
+.form-control[type="textarea"],
+.form-control[rows] {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Сообщения об ошибках */
+.error-message {
+  display: block;
+  margin-top: 6px;
+  color: #e74c3c;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Подсказки */
+.form-hint {
+  display: block;
+  margin-top: 6px;
+  color: #7f8c8d;
+  font-size: 0.875rem;
+}
+
+/* Прогресс бар */
+.progress-container {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.progress-container label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.progress-bar {
+  height: 12px;
+  background: #ecf0f1;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71, #3498db);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #7f8c8d;
+}
+
+.progress-warning {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* Кнопки */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #2c3e50;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e9ecef;
+  border-color: #ccc;
+}
+
+/* Спиннер */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Скрытие элементов для скринридеров */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Подсказки по клавиатуре */
+.keyboard-hints {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.keyboard-hints p {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.keyboard-hints ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.keyboard-hints li {
+  margin-bottom: 4px;
+}
+
+/* Адаптивность для модального окна */
+@media (max-width: 640px) {
+  .deadline-form {
+    padding: 16px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  
+  .technology-info {
+    padding: 12px;
+  }
+  
+  .deadline-form h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Особые стили для корректного отображения в модальном окне */
+.modal-content .deadline-form {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: 8px; /* Для скроллбара */
+}
+
+/* Кастомный скроллбар для формы */
+.modal-content .deadline-form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content .deadline-form::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.modal-content .deadline-form::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.modal-content .deadline-form::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+
+
+
+
+/* Инструкции по клавиатуре */
+.keyboard-instructions,
+.keyboard-instructions-visible {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.keyboard-instructions-visible {
+  border: 1px solid #e0e0e0;
+}
+
+.keyboard-instructions h4,
+.keyboard-instructions-visible h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.keyboard-instructions ul,
+.keyboard-instructions-visible ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.keyboard-instructions li,
+.keyboard-instructions-visible li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* Стили для горячих клавиш */
+kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  font-family: monospace;
+}
+
+/* Улучшенные сообщения об ошибках с иконками */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  color: #e74c3c;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #fff5f5;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border-left: 3px solid #e74c3c;
+}
+
+.error-message::before {
+  content: '⚠️';
+  font-size: 1rem;
+}
+
+/* Фокус для доступности */
+.form-control:focus,
+.btn:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+/* Анимация для успешной отправки */
+@keyframes success-pulse {
+  0% { background-color: #2ecc71; }
+  50% { background-color: #27ae60; }
+  100% { background-color: #3498db; }
+}
+
+.btn-primary:disabled:not([aria-busy="true"]) {
+  opacity: 0.6;
+}
+
+.btn-primary[aria-busy="true"] {
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  animation: success-pulse 2s ease-in-out infinite;
+}
+
+/* Скрытие элементов для скринридеров - УЛУЧШЕННАЯ ВЕРСИЯ */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Подсказки в полях */
+.form-hint {
+  display: block;
+  margin-top: 6px;
+  color: #7f8c8d;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* Адаптивность для инструкций */
+@media (max-width: 640px) {
+  .keyboard-instructions-visible {
+    display: none; /* На мобильных скрываем визуальные инструкции */
+  }
+  
+  .form-control {
+    font-size: 16px; /* Предотвращаем масштабирование на iOS */
+    min-height: 44px; /* Минимальная высота для касания */
+  }
+  
+  .btn {
+    padding: 14px 16px; /* Увеличиваем область касания */
+  }
+}
+
+/* Подсветка активного элемента для навигации */
+.form-control:focus-visible,
+.btn:focus-visible {
+  position: relative;
+  z-index: 2;
+}
+
+/* Стили для кастомного скроллбара в форме */
+.deadline-form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.deadline-form::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.deadline-form::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 4px;
+}
+
+.deadline-form::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+
+/* Анимация появления ошибок */
+.error-message {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Индикатор загрузки */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

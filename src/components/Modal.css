@@ -9,31 +9,47 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
+  z-index: 9999; /* Увеличиваем z-index */
+  padding: 20px; /* Добавляем отступы по краям */
+  box-sizing: border-box;
+  overflow: auto; /* Добавляем возможность скролла */
 }
 
 .modal-window {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease;
-  overflow: hidden;
+  padding: 0;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh; /* Уменьшаем максимальную высоту */
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalAppear 0.3s ease-out;
+  position: relative; /* Добавляем относительное позиционирование */
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-small {
-  width: 90%;
   max-width: 400px;
 }
 
 .modal-medium {
-  width: 90%;
   max-width: 600px;
 }
 
 .modal-large {
-  width: 90%;
   max-width: 800px;
+  max-height: 85vh; /* Для больших модалок немного уменьшаем высоту */
 }
 
 .modal-header {
@@ -41,14 +57,19 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #eaeaea;
-  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+  border-radius: 12px 12px 0 0; /* Закругляем верхние углы */
 }
 
 .modal-header h3 {
   margin: 0;
-  color: #2c3e50;
   font-size: 1.3rem;
+  color: #2c3e50;
+  font-weight: 600;
 }
 
 .modal-close {
@@ -57,38 +78,96 @@
   font-size: 28px;
   cursor: pointer;
   color: #666;
+  padding: 4px 8px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: all 0.2s;
   width: 36px;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s;
 }
 
 .modal-close:hover {
-  background-color: #eaeaea;
   color: #333;
+  background-color: #f0f0f0;
 }
 
 .modal-content {
   padding: 24px;
-  max-height: 70vh;
+  overflow: visible; /* Меняем на visible */
+}
+
+/* Стили для скроллбара в модальном окне */
+.modal-window::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-window::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal-window::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.modal-window::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .modal-background {
+    padding: 10px;
+    align-items: flex-start; /* Выравниваем по верху на мобильных */
+    padding-top: 60px; /* Добавляем отступ сверху */
+  }
+  
+  .modal-window {
+    max-width: 100%;
+    max-height: calc(100vh - 70px); /* Учитываем отступы */
+    border-radius: 8px;
+  }
+  
+  .modal-header {
+    padding: 16px 20px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-background {
+    padding: 5px;
+    padding-top: 40px;
+  }
+  
+  .modal-window {
+    max-height: calc(100vh - 50px);
+  }
+  
+  .modal-header {
+    padding: 12px 16px;
+  }
+  
+  .modal-content {
+    padding: 16px;
+  }
+}
+
+/* Новый размер для большого редактора */
+.modal-extra-large {
+  width: 85vw;
+  max-width: 1200px;
+  min-height: 70vh;
+  max-height: 90vh;
   overflow-y: auto;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
 }

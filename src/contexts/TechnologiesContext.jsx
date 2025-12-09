@@ -1,4 +1,3 @@
-// src/contexts/TechnologiesContext.jsx
 import { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 const TechnologiesContext = createContext();
@@ -84,43 +83,89 @@ const getInitialTechnologies = (language = 'ru') => {
       title: 'React',
       description: getTechnologyTranslation('React', language) || 'Библиотека для создания пользовательских интерфейсов',
       status: 'in-progress',
-      notes: ''
+      notes: '',
+      // Новые поля для сроков
+      startDate: '2024-12-01',
+      deadline: '2024-12-31',
+      estimatedHours: 40,
+      priority: 'high',
+      deadlineNotes: 'Изучить хуки и контекст',
+      category: 'frontend'
     },
     {
       id: 2,
       title: 'TypeScript',
       description: getTechnologyTranslation('TypeScript', language) || 'Статическая типизация для JavaScript',
       status: 'not-started',
-      notes: ''
+      notes: '',
+      // Новые поля для сроков
+      startDate: '',
+      deadline: '',
+      estimatedHours: 0,
+      priority: 'medium',
+      deadlineNotes: '',
+      category: 'frontend'
     },
     {
       id: 3,
       title: 'Vite',
       description: getTechnologyTranslation('Vite', language) || 'Современный инструмент сборки',
       status: 'completed',
-      notes: ''
+      notes: '',
+      startDate: '',
+      deadline: '',
+      estimatedHours: 20,
+      priority: 'low',
+      deadlineNotes: '',
+      category: 'tool'
     },
     {
       id: 4,
       title: 'React Router',
       description: getTechnologyTranslation('React Router', language) || 'Маршрутизация для React приложений',
       status: 'in-progress',
-      notes: ''
+      notes: '',
+      startDate: '',
+      deadline: '',
+      estimatedHours: 15,
+      priority: 'medium',
+      deadlineNotes: '',
+      category: 'frontend'
     },
     {
       id: 5,
       title: 'CSS-in-JS',
       description: getTechnologyTranslation('CSS-in-JS', language) || 'Стилизация компонентов в JavaScript',
       status: 'not-started',
-      notes: ''
+      notes: '',
+      startDate: '',
+      deadline: '',
+      estimatedHours: 25,
+      priority: 'low',
+      deadlineNotes: '',
+      category: 'frontend'
     }
   ];
 };
 
 export function TechnologiesProvider({ children }) {
+  // ИСПРАВЛЕНО: правильная загрузка данных
   const [technologies, setTechnologies] = useState(() => {
-    const saved = localStorage.getItem('technologies');
-    return saved ? JSON.parse(saved) : getInitialTechnologies();
+    try {
+      const saved = localStorage.getItem('technologies');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Преобразуем все estimatedHours в числа при загрузке
+        return parsed.map(tech => ({
+          ...tech,
+          estimatedHours: tech.estimatedHours !== undefined ? Number(tech.estimatedHours) : 0
+        }));
+      }
+      return getInitialTechnologies();
+    } catch (error) {
+      console.error('Ошибка загрузки технологий:', error);
+      return getInitialTechnologies();
+    }
   });
 
   const [currentLanguage, setCurrentLanguage] = useState(() => {
@@ -137,28 +182,26 @@ export function TechnologiesProvider({ children }) {
   });
 
   useEffect(() => {
-    localStorage.setItem('technologies', JSON.stringify(technologies));
+    try {
+      localStorage.setItem('technologies', JSON.stringify(technologies));
+      console.log('💾 Технологии сохранены в localStorage:', technologies);
+    } catch (error) {
+      console.error('Ошибка сохранения технологий:', error);
+    }
   }, [technologies]);
 
   // Функция для обновления описаний при смене языка
   const updateDescriptionsForLanguage = useCallback((language) => {
     setTechnologies(prev => prev.map(tech => {
-      // Пытаемся найти перевод для этой технологии
       const translation = getTechnologyTranslation(tech.title, language);
-      
-      // Если перевод найден, обновляем описание
       if (translation) {
         return {
           ...tech,
           description: translation
         };
       }
-      
-      // Если перевода нет, оставляем текущее описание
       return tech;
     }));
-    
-    // Сохраняем текущий язык в контексте
     setCurrentLanguage(language);
   }, []);
 
@@ -175,7 +218,15 @@ export function TechnologiesProvider({ children }) {
       description: techData.description || 'Описание отсутствует',
       status: techData.status || 'not-started',
       notes: techData.notes || '',
-      category: techData.category || 'other'
+      category: techData.category || 'other',
+      // Новые поля для сроков
+      startDate: techData.startDate || '',
+      deadline: techData.deadline || '',
+      estimatedHours: techData.estimatedHours ? Number(techData.estimatedHours) : 0,
+      priority: techData.priority || 'medium',
+      deadlineNotes: techData.deadlineNotes || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
     
     setTechnologies(prev => [...prev, newTech]);
@@ -209,9 +260,9 @@ export function TechnologiesProvider({ children }) {
   }, []);
 
   // Функция: Полный сброс ВСЕХ данных
-  const resetAllData = useCallback((language = 'ru') => {
-    const resetTechnologies = getInitialTechnologies().map(tech => {
-      const translation = getTechnologyTranslation(tech.title, language) || tech.description;
+  const resetAllData = useCallback(() => {
+    const resetTechnologies = getInitialTechnologies(currentLanguage).map(tech => {
+      const translation = getTechnologyTranslation(tech.title, currentLanguage) || tech.description;
       return {
         ...tech,
         description: translation,
@@ -220,8 +271,7 @@ export function TechnologiesProvider({ children }) {
       };
     });
     setTechnologies(resetTechnologies);
-    setCurrentLanguage(language);
-  }, []);
+  }, [currentLanguage]);
 
   // Функция: Проверка, существует ли уже технология с таким названием
   const technologyExists = useCallback((title) => {
@@ -234,6 +284,120 @@ export function TechnologiesProvider({ children }) {
   const clearAllTechnologies = useCallback(() => {
     setTechnologies([]);
   }, []);
+
+  // ФУНКЦИЯ: Обновление сроков технологии (ИСПРАВЛЕНА!)
+  const updateDeadline = useCallback((id, deadlineData) => {
+    console.log('🔄 Контекст: обновление дедлайна для технологии', { id, deadlineData });
+    
+    setTechnologies(prev => {
+      const updated = prev.map(tech => {
+        if (tech.id === id) {
+          console.log('📝 Найдена технология для обновления:', tech.title);
+          
+          // ИСПРАВЛЕНО: правильное преобразование часов
+          let estimatedHours = 0;
+          if (deadlineData.estimatedHours !== undefined && deadlineData.estimatedHours !== null) {
+            estimatedHours = Number(deadlineData.estimatedHours);
+            if (isNaN(estimatedHours)) estimatedHours = 0;
+          }
+          
+          return {
+            ...tech,
+            startDate: deadlineData.startDate || tech.startDate || '',
+            deadline: deadlineData.deadline || tech.deadline || '',
+            estimatedHours: estimatedHours,
+            priority: deadlineData.priority || tech.priority || 'medium',
+            deadlineNotes: deadlineData.notes || deadlineData.deadlineNotes || tech.deadlineNotes || '',
+            updatedAt: new Date().toISOString()
+          };
+        }
+        return tech;
+      });
+      
+      try {
+        localStorage.setItem('technologies', JSON.stringify(updated));
+        console.log('💾 Данные сохранены в localStorage');
+      } catch (error) {
+        console.error('Ошибка сохранения в localStorage:', error);
+      }
+      
+      return updated;
+    });
+  }, []);
+
+  // ФУНКЦИЯ: Массовое обновление сроков
+  const bulkUpdateDeadlines = useCallback((ids, deadlineData) => {
+    setTechnologies(prev => prev.map(tech => {
+      if (ids.includes(tech.id)) {
+        const estimatedHours = deadlineData.estimatedHours !== undefined 
+          ? Number(deadlineData.estimatedHours) 
+          : tech.estimatedHours;
+          
+        return {
+          ...tech,
+          ...deadlineData,
+          estimatedHours: estimatedHours,
+          updatedAt: new Date().toISOString()
+        };
+      }
+      return tech;
+    }));
+  }, []);
+
+  // ФУНКЦИЯ: Массовое обновление статусов (ДОБАВЛЕНО ДЛЯ ЗАДАНИЯ 2)
+  const bulkUpdateStatuses = useCallback((changes) => {
+    console.log('🔄 Контекст: массовое обновление статусов', changes);
+    
+    setTechnologies(prev => {
+      const updated = prev.map(tech => {
+        const change = changes.find(c => c.id === tech.id);
+        if (change) {
+          console.log(`📝 Обновление статуса для "${tech.title}": ${tech.status} -> ${change.status}`);
+          return {
+            ...tech,
+            status: change.status,
+            updatedAt: new Date().toISOString()
+          };
+        }
+        return tech;
+      });
+      
+      try {
+        localStorage.setItem('technologies', JSON.stringify(updated));
+        console.log('💾 Данные сохранены в localStorage после массового обновления');
+      } catch (error) {
+        console.error('Ошибка сохранения в localStorage:', error);
+      }
+      
+      return updated;
+    });
+  }, []);
+
+  // ФУНКЦИЯ: Расчет прогресса по времени для технологии
+  const getDeadlineProgress = useCallback((tech) => {
+    if (!tech.startDate || !tech.deadline) return null;
+    
+    const start = new Date(tech.startDate);
+    const deadline = new Date(tech.deadline);
+    const today = new Date();
+    
+    if (today < start) return 0;
+    if (today > deadline) return 100;
+    
+    const totalDays = (deadline - start) / (1000 * 60 * 60 * 24);
+    const passedDays = (today - start) / (1000 * 60 * 60 * 24);
+    
+    return Math.round((passedDays / totalDays) * 100);
+  }, []);
+
+  // ФУНКЦИЯ: Получение просроченных технологий
+  const getOverdueTechnologies = useCallback(() => {
+    const today = new Date();
+    return technologies.filter(tech => {
+      if (!tech.deadline || tech.status === 'completed') return false;
+      return new Date(tech.deadline) < today;
+    });
+  }, [technologies]);
 
   const progress = technologies.length > 0 
     ? Math.round((technologies.filter(t => t.status === 'completed').length / technologies.length) * 100)
@@ -252,6 +416,12 @@ export function TechnologiesProvider({ children }) {
     resetAllData,
     clearAllTechnologies,
     technologyExists,
+    // Новые функции для сроков
+    updateDeadline,
+    bulkUpdateDeadlines,
+    bulkUpdateStatuses, // ← ДОБАВЛЕНО ДЛЯ ЗАДАНИЯ 2
+    getDeadlineProgress,
+    getOverdueTechnologies,
     progress
   };
 

@@ -13,7 +13,8 @@ function Modal({ isOpen, onClose, title, children, size = 'medium' }) {
   const sizeClass = {
     small: 'modal-small',
     medium: 'modal-medium',
-    large: 'modal-large'
+    large: 'modal-large',
+    extraLarge: 'modal-extra-large'   // 🔥 Новый большой размер
   }[size];
 
   return (
@@ -21,10 +22,15 @@ function Modal({ isOpen, onClose, title, children, size = 'medium' }) {
       <div className={`modal-window ${sizeClass}`}>
         <div className="modal-header">
           <h3>{title}</h3>
-          <button className="modal-close" onClick={onClose} aria-label="Закрыть">
+          <button 
+            className="modal-close" 
+            onClick={onClose} 
+            aria-label="Закрыть"
+          >
             ×
           </button>
         </div>
+
         <div className="modal-content">
           {children}
         </div>

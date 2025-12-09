@@ -1,274 +1,247 @@
-/* src/components/TechnologyCard.css */
+/* ==========================
+   ОСНОВНАЯ КАРТОЧКА
+   ========================== */
 
-/* Основные стили карточки */
 .technology-card {
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 15px 0;
-  transition: all 0.3s ease;
+  background: #faf7ff;
+  padding: 22px;
+  border-radius: 16px;
+  border: 2px solid #d7c9ff;
+  box-shadow: 0 4px 18px rgba(100, 0, 180, 0.08);
+  margin: 25px 0;
+  transition: all 0.25s ease;
   cursor: pointer;
-  background: white;
-  position: relative;
 }
 
 .technology-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(100, 0, 180, 0.12);
 }
 
-.technology-card.deleting {
-  opacity: 0.6;
-  background: linear-gradient(45deg, #ffeaea 0%, #fff0f0 100%);
-  border: 2px dashed #ff6b6b !important;
-}
+/* ===== Статусы карточек ===== */
 
-/* Стили по статусам */
 .technology-card.completed {
-  border-color: #8a2be2;
-  background-color: #f3e8ff;
+  background: #f3e8ff;
+  border-color: #b58bff;
 }
 
 .technology-card.in-progress {
-  border-color: #d63384;
-  background-color: #ffe8f0;
+  background: #ffe8f3;
+  border-color: #ff9dcc;
 }
 
 .technology-card.not-started {
-  border-color: #adb5bd;
-  background-color: #f8f9fa;
+  background: #f6f7fa;
+  border-color: #cfd3ea;
 }
 
-/* Заголовок и описание */
+/* ==========================
+   ЗАГОЛОВОК
+   ========================== */
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 }
 
-.technology-card h3 {
+.card-header h3 {
   margin: 0;
-  color: #2c3e50;
-  font-size: 1.3em;
-  flex: 1;
+  color: #2c2b3c;
+  font-size: 1.45rem;
+  font-weight: 700;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
 }
 
-.technology-card p {
-  margin: 0 0 15px 0;
-  color: #555;
-}
+/* ==========================
+   СТАТУС
+   ========================== */
 
-/* Индикатор статуса */
 .status-indicator {
-  font-weight: bold;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 20px;
-  display: inline-block;
-  font-size: 0.85em;
-  min-width: 100px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 110px;
   text-align: center;
-  user-select: none;
+  text-transform: uppercase;
+  color: white;
 }
 
 .completed .status-indicator {
-  background-color: #8a2be2;
-  color: white;
+  background: linear-gradient(135deg, #8a2be2, #b06bff);
 }
-
 .in-progress .status-indicator {
-  background-color: #d63384;
-  color: white;
+  background: linear-gradient(135deg, #d63384, #ff7abb);
 }
-
 .not-started .status-indicator {
-  background-color: #adb5bd;
-  color: white;
+  background: linear-gradient(135deg, #6c757d, #9aa0a6);
 }
 
-/* ========== КНОПКА УДАЛЕНИЯ ========== */
-.delete-btn {
+/* ==========================
+   КНОПКИ
+   ========================== */
+
+.action-btn {
   background: none;
-  border: 2px solid #fed7d7;
-  color: #e53e3e;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  border: none;
   cursor: pointer;
   font-size: 1.2rem;
+  transition: 0.2s ease;
+  color: inherit;
+}
+
+.action-btn:hover {
+  transform: scale(1.15);
+}
+
+.deadline-btn {
+  color: #6a0dad;
+}
+
+.delete-btn {
+  color: #e74c3c;
+}
+
+/* ==========================
+   ОПИСАНИЕ
+   ========================== */
+
+.description {
+  margin: 12px 0 18px;
+  color: #4a4959;
+  font-size: 1rem;
+}
+
+/* ==========================
+   ДЕДЛАЙНЫ
+   ========================== */
+
+.deadline-info {
+  background: #ffffff;
+  border-radius: 12px;
+  border-left: 4px solid #6a0dad;
+  padding: 12px 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(90, 0, 150, 0.06);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10; /* Чтобы кнопка была выше и не перехватывала клик карточки */
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-.delete-btn:hover {
-  background: #fed7d7;
-  border-color: #fc8181;
-  transform: scale(1.05);
-}
-
-.delete-btn:active {
-  transform: scale(0.95);
-}
-
-.delete-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #f7fafc;
-}
-
-/* ========== КНОПКА ЗАМЕТОК ========== */
-.notes-toggle {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #8a2be2;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1em;
+.deadline-item strong {
   font-weight: 600;
-  color: white;
-  transition: all 0.2s ease;
-  display: block;
+  color: #333;
+}
+
+.deadline-status {
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Цвета статусов дедлайна */
+.deadline-status.overdue { background: #ffe6e6; color: #e63946; }
+.deadline-status.urgent { background: #fff1d6; color: #e76f00; }
+.deadline-status.halfway { background: #e9f3ff; color: #4679d6; }
+.deadline-status.in-progress { background: #e6f7ec; color: #2fa04f; }
+.deadline-status.not-started { background: #f0f0f0; color: #7a7a7a; }
+
+/* ==========================
+   ПРИОРИТЕТ
+   ========================== */
+
+.priority-badge {
+  padding: 4px 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white !important;
+}
+
+/* ==========================
+   ЗАМЕТКИ
+   ========================== */
+
+.notes-toggle {
+  margin-top: 18px;
   width: 100%;
-  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7d3cff, #8d4cff);
+  color: white;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+  border: none;
 }
 
 .notes-toggle:hover {
-  background-color: white;
-  color: #8a2be2;
-  border-color: #8a2be2;
-  transform: translateY(-2px);
+  background: white;
+  color: #7d3cff;
+  border: 2px solid #7d3cff;
 }
 
-/* Цвета кнопки по статусам */
-.completed .notes-toggle {
-  background-color: #8a2be2;
-}
-
-.completed .notes-toggle:hover {
-  background-color: white;
-  color: #8a2be2;
-  border-color: #8a2be2;
-}
-
-.in-progress .notes-toggle {
-  background-color: #d63384;
-}
-
-.in-progress .notes-toggle:hover {
-  background-color: white;
-  color: #d63384;
-  border-color: #d63384;
-}
-
-.not-started .notes-toggle {
-  background-color: #6c757d;
-}
-
-.not-started .notes-toggle:hover {
-  background-color: white;
-  color: #6c757d;
-  border-color: #6c757d;
-}
-
-/* ========== ОБЛАСТЬ ЗАМЕТОК ========== */
 .notes-editor {
-  margin-top: 15px;
-  padding: 15px;
-  background-color: #fafafa;
-  border-radius: 8px;
-  border: 1px solid #eaeaea;
-  cursor: auto; /* Убираем курсор-указатель в области заметок */
-}
-
-.notes-editor h4 {
-  margin: 0 0 10px 0;
-  color: #444;
-  font-size: 1em;
+  margin-top: 14px;
+  background: white;
+  border: 1px solid #e4dcff;
+  border-radius: 12px;
+  padding: 16px;
 }
 
 .notes-editor textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.9em;
+  border-radius: 8px;
+  border: 1px solid #d8cfff;
   resize: vertical;
   min-height: 80px;
-  font-family: inherit;
-  transition: border 0.2s;
-  cursor: text;
 }
 
-.notes-editor textarea:focus {
-  outline: none;
-  border-color: #8a2be2;
-  box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.1);
-}
+/* ==========================
+   МЕДИА
+   ========================== */
 
-.notes-hint {
-  font-size: 0.8em;
-  color: #666;
-  margin-top: 8px;
-  padding: 5px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
-  display: inline-block;
-}
-
-/* Анимация удаления */
-@keyframes slideOutRight {
-  0% { 
-    transform: translateX(0);
-    opacity: 1;
-  }
-  70% {
-    transform: translateX(50px);
-    opacity: 0.3;
-  }
-  100% { 
-    transform: translateX(100px);
-    opacity: 0;
-  }
-}
-
-.technology-card.deleting {
-  animation: slideOutRight 0.4s ease-out forwards;
-}
-
-/* Улучшение для мобильных устройств */
 @media (max-width: 768px) {
   .card-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
   }
-  
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .delete-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-  }
-  
-  .status-indicator {
-    min-width: 90px;
-    padding: 6px 12px;
-    font-size: 0.8em;
-  }
+}
+
+/* ==========================
+   НОВОЕ: БЛОК "ЗАМЕТКИ ПО СРОКАМ"
+   ========================== */
+
+.deadline-notes-block {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #e4dcff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(120, 0, 200, 0.05);
+}
+
+.deadline-notes-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #5a2d82;
+  margin-bottom: 8px;
+}
+
+.deadline-notes-text {
+  font-size: 0.9rem;
+  color: #4a3b63;
+  white-space: pre-wrap;
+  line-height: 1.45;
 }
