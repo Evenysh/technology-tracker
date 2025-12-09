@@ -30,6 +30,7 @@ function ApiSearch() {
     { id: 'language', name: t.categories.language }
   ];
 
+  // 🔥 Мок-данные
   const getMockTechnologies = useCallback(() => {
     return [
       { id: 1, name: 'React', description: language === 'ru' ? 'Библиотека для создания пользовательских интерфейсов' : 'A library for building user interfaces', category: 'frontend', popularity: 'high', website: 'https://react.dev' },
@@ -47,22 +48,33 @@ function ApiSearch() {
     ];
   }, [language]);
 
+  // ✅ Исправлено — фильтрация по категориям работает всегда
   const loadAllTechnologies = useCallback(() => {
     setLoading(true);
+
     setTimeout(() => {
-      const mock = getMockTechnologies().map(tech => ({
+      let items = getMockTechnologies();
+
+      if (selectedCategory !== 'all') {
+        items = items.filter(t => t.category === selectedCategory);
+      }
+
+      const processed = items.map(tech => ({
         ...tech,
         isAdded: addedTechnologies.has(tech.name) || technologyExists(tech.name)
       }));
-      setResults(mock);
+
+      setResults(processed);
       setLoading(false);
       setInitialLoad(false);
     }, 300);
-  }, [getMockTechnologies, addedTechnologies, technologyExists]);
+  }, [getMockTechnologies, selectedCategory, addedTechnologies, technologyExists]);
 
+  // 🔍 Поиск по запросу + фильтр категории
   const searchTechnologies = useCallback(async (query) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
+
     try {
       setLoading(true);
       setError(null);
@@ -100,17 +112,20 @@ function ApiSearch() {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
+
     if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
 
     if (!value.trim()) {
       loadAllTechnologies();
       return;
     }
+
     searchTimeoutRef.current = setTimeout(() => searchTechnologies(value), 600);
   };
 
   const handleCategoryChange = (cat) => {
     setSelectedCategory(cat);
+
     if (searchTerm.trim()) searchTechnologies(searchTerm);
     else loadAllTechnologies();
   };
@@ -182,9 +197,7 @@ function ApiSearch() {
             className="search-input"
           />
 
-          {loading && (
-            <span className="loading-indicator">{t.searchLoading}</span>
-          )}
+          {loading && <span className="loading-indicator">{t.searchLoading}</span>}
 
           {searchTerm && (
             <button
@@ -199,6 +212,7 @@ function ApiSearch() {
         <div className="filter-controls">
           <div className="category-filter">
             <span className="filter-label">{t.categoryFilter}</span>
+
             <div className="category-buttons">
               {categories.map(cat => (
                 <button
@@ -220,12 +234,8 @@ function ApiSearch() {
         </div>
       </div>
 
-      {/* Ошибка поиска */}
-      {error && (
-        <div className="error-message">
-          ⚠️ {error}
-        </div>
-      )}
+      {/* Ошибка */}
+      {error && <div className="error-message">⚠️ {error}</div>}
 
       {/* Результаты */}
       <div className="search-results">
@@ -233,12 +243,10 @@ function ApiSearch() {
           {results.map(tech => (
             <div key={tech.id} className="tech-result-card">
 
-              {/* Заголовок */}
               <div className="tech-header">
                 <h4>{tech.name}</h4>
               </div>
 
-              {/* 🔥 Популярность теперь ВСЕГДА под заголовком */}
               <div className="tech-badges">
                 <span className={`popularity-badge ${tech.popularity}`}>
                   {getPopularityText(tech.popularity)}
@@ -246,22 +254,19 @@ function ApiSearch() {
 
                 {tech.isAdded && (
                   <span className="added-badge">
-                    ✅ {language === 'ru' ? 'Добавлено' : 'Added'}
+                    {language === 'ru' ? 'Добавлено' : 'Added'}
                   </span>
                 )}
               </div>
 
-              {/* Категория */}
               <div className="tech-meta">
                 <span className="tech-category">
                   {t.techCategory} <strong>{categories.find(c => c.id === tech.category)?.name}</strong>
                 </span>
               </div>
 
-              {/* Описание */}
               <p className="tech-description">{tech.description}</p>
 
-              {/* Кнопки */}
               <div className="tech-actions">
                 <a href={tech.website} target="_blank" rel="noopener noreferrer" className="website-link">
                   {t.officialWebsite}
@@ -273,7 +278,7 @@ function ApiSearch() {
                   onClick={() => handleAddToTracker(tech)}
                 >
                   {tech.isAdded
-                    ? language === 'ru' ? 'Добавлено' : 'Added'
+                    ? (language === 'ru' ? 'Добавлено' : 'Added')
                     : t.addToTracker}
                 </button>
               </div>
