@@ -7,8 +7,8 @@ import { translations } from '../i18n/translations';
 import Modal from './Modal';
 import BulkStatusEditor from './BulkStatusEditor';
 
-function QuickActions({ 
-  onMarkAllCompleted, 
+function QuickActions({
+  onMarkAllCompleted,
   onResetAll,
   onToggleStatus
 }) {
@@ -20,12 +20,15 @@ function QuickActions({
   const [showExportModal, setShowExportModal] = useState(false);
   const [showBulkEditor, setShowBulkEditor] = useState(false);
 
-  // Статистика
+  // текст, который будет отображен в модалке экспорта
+  const [exportMessage, setExportMessage] = useState("");
+
+  // расчёт статистики
   const notStartedCount = technologies.filter(t => t.status === 'not-started').length;
   const completedCount = technologies.filter(t => t.status === 'completed').length;
   const inProgressCount = technologies.filter(t => t.status === 'in-progress').length;
 
-  // Сохранение для массового редактора
+  // массовое сохранение
   const handleBulkSave = async (changes) => {
     try {
       await bulkUpdateStatuses(changes);
@@ -38,25 +41,29 @@ function QuickActions({
     }
   };
 
-  // Экспорт
+  // экспорт данных → записываем текст в модалку
   const handleExport = () => {
     const data = {
       exportedAt: new Date().toISOString(),
       count: technologies.length,
       technologies
     };
-    
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const link = document.createElement('a');
 
     link.href = URL.createObjectURL(blob);
-    link.download = `export-${new Date().toISOString().slice(0,10)}.json`;
+    link.download = `export-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
 
+    // присваиваем текст
+    setExportMessage(qa.exportSuccess || 'Данные успешно экспортированы!');
+
+    // открываем модалку
     setShowExportModal(true);
   };
 
-  // Случайный выбор
+  // выбор случайной технологии
   const pickRandom = () => {
     const pool = technologies.filter(t => t.status === 'not-started');
     if (pool.length === 0) {
@@ -66,6 +73,7 @@ function QuickActions({
 
     const random = pool[Math.floor(Math.random() * pool.length)];
     onToggleStatus(random.id);
+
     alert(`${qa.randomPickedPrefix || 'Вы выбрали: '}${random.title}`);
   };
 
@@ -115,14 +123,18 @@ function QuickActions({
         </div>
       </div>
 
+      {/* Модалка экспорта с корректным текстом */}
       <Modal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
         title={qa.exportTitle || 'Экспорт'}
       >
-        <p>{qa.exportSuccess || 'Данные успешно экспортированы!'}</p>
+        <p style={{ fontSize: '18px', paddingTop: '10px' }}>
+          {exportMessage}
+        </p>
       </Modal>
 
+      {/* Модалка массового редактирования */}
       <Modal
         isOpen={showBulkEditor}
         onClose={() => setShowBulkEditor(false)}

@@ -171,3 +171,14 @@
   background: #ffffff;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
 }
+
+
+/* Тёмная тема — модальное окно */
+.dark-theme .modal-content {
+  color: #2d0055 !important; /* насыщенный фиолетовый, как в светлой теме */
+}
+
+/* Чтобы заголовок тоже был виден */
+.dark-theme .modal-title {
+  color: #2d0055 !important;
+}
