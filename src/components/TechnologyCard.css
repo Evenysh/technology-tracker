@@ -11,6 +11,7 @@
   margin: 25px 0;
   transition: all 0.25s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .technology-card:hover {
@@ -209,18 +210,7 @@
 }
 
 /* ==========================
-   МЕДИА
-   ========================== */
-
-@media (max-width: 768px) {
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* ==========================
-   НОВОЕ: БЛОК "ЗАМЕТКИ ПО СРОКАМ"
+   БЛОК "ЗАМЕТКИ ПО СРОКАМ"
    ========================== */
 
 .deadline-notes-block {
@@ -244,4 +234,60 @@
   color: #4a3b63;
   white-space: pre-wrap;
   line-height: 1.45;
+}
+
+/* ==========================
+   DARK THEME — FIX
+   ========================== */
+
+.dark-theme .deadline-info {
+  background: #2e2e3b;
+  border-left-color: #b288ff;
+}
+
+.dark-theme .deadline-item,
+.dark-theme .deadline-item strong {
+  color: #ffffff !important;
+}
+
+.dark-theme .deadline-status.overdue { background: #5c1e1e; color: #ff8a8a; }
+.dark-theme .deadline-status.urgent { background: #5a3b14; color: #ffc278; }
+.dark-theme .deadline-status.halfway { background: #1f2f4d; color: #9bc2ff; }
+.dark-theme .deadline-status.in-progress { background: #1d3a28; color: #80eaa8; }
+.dark-theme .deadline-status.not-started { background: #3c3c4e; color: #d1d1e0; }
+
+/* ==========================
+   НОВОЕ — ОБЯЗАТЕЛЬНО ДЛЯ ЗАДАНИЯ №2
+   ========================== */
+
+/* Режим массового выбора */
+.bulk-edit-mode {
+  cursor: default !important;
+}
+
+/* Чекбокс */
+.selection-checkbox {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 5;
+}
+
+.tech-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Выбранная карточка */
+.technology-card.selected {
+  border-color: #7d3cff !important;
+  box-shadow: 0 0 12px rgba(125, 60, 255, 0.4) !important;
+  transform: translateY(0) scale(1.01);
+}
+
+/* Hover отключается в bulk-edit */
+.bulk-edit-mode .technology-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
 }

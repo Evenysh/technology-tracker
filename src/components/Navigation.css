@@ -110,3 +110,25 @@
     padding: 0.6rem;
   }
 }
+
+
+
+/* Оставляем старые стили на случай зависимостей */
+.navigation {
+  display: none; /* MUI заменяет */
+}
+
+/* Чтобы MUI AppBar корректно работал и выглядел одинаково */
+.MuiAppBar-root {
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  backdrop-filter: blur(10px);
+}
+
+.MuiButton-root {
+  transition: 0.2s ease;
+}
+
+.MuiButton-root:hover {
+  opacity: 0.85;
+}

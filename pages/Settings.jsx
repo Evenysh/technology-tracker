@@ -6,20 +6,22 @@ import { translations } from "../src/i18n/translations";
 import { useNotification } from "../src/contexts/NotificationContext";
 import "./Settings.css";
 
+// ⭐ Импорты MUI
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
 function Settings() {
   const { technologies, resetAllStatuses, resetAllData } = useTechnologies();
   const { language, changeLanguage } = useLanguage();
   const t = translations[language];
 
-  const { showNotification } = useNotification(); // ⭐ Notification hook
+  const { showNotification } = useNotification();
 
-  // Загружаем настройки
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem("appSettings");
     return saved ? JSON.parse(saved) : { theme: "light", language: "ru" };
   });
 
-  // Применяем тему
   useEffect(() => {
     document.documentElement.classList.toggle(
       "dark-theme",
@@ -312,6 +314,23 @@ function Settings() {
               {t.settings.myGitHub}
             </a>
           </div>
+        </div>
+
+        {/* 🟣🟣🟣 НОВАЯ СЕКЦИЯ — ТЕСТ MUI 🟣🟣🟣 */}
+        <div className="settings-section">
+          <div className="section-title">
+            <h2>Тест компонентов MUI</h2>
+          </div>
+
+          <Box sx={{ padding: "10px 0" }}>
+            <Button 
+              variant="contained" 
+              color="primary"
+              onClick={() => showNotification("MUI кнопка работает!", "success")}
+            >
+              MUI кнопка
+            </Button>
+          </Box>
         </div>
 
         {/* Сброс настроек */}

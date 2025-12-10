@@ -321,3 +321,21 @@
 .dark-theme .update-descriptions-btn:hover {
   box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
+
+
+/* Делает текст в белых карточках чёрным даже в тёмной теме */
+
+.dark-theme .settings-section {
+  color: #000 !important;
+}
+
+.dark-theme .settings-section h2,
+.dark-theme .settings-section h3,
+.dark-theme .settings-section p,
+.dark-theme .settings-section span,
+.dark-theme .settings-section strong,
+.dark-theme .settings-section .info-item,
+.dark-theme .settings-section .app-info,
+.dark-theme .settings-section .app-info * {
+  color: #000 !important;
+}

@@ -1,9 +1,16 @@
 // src/App.jsx
 import './App.css';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from 'react-router-dom';
+
 import { useLanguage } from './contexts/LanguageContext';
 import { useTechnologies } from './contexts/TechnologiesContext';
+import { useThemeMode } from './contexts/ThemeContext';        // ⭐ NEW
 import { translations } from './i18n/translations';
 
 import ProgressHeader from './components/ProgressHeader';
@@ -12,6 +19,7 @@ import QuickActions from './components/QuickActions';
 import FilterButtons from './components/FilterButtons';
 import Navigation from './components/Navigation';
 import Notification from './components/Notification';
+import ApiSearch from './components/ApiSearch';
 
 import Stats from '../pages/Stats';
 import Settings from '../pages/Settings';
@@ -19,11 +27,19 @@ import Settings from '../pages/Settings';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { TechnologiesProvider } from './contexts/TechnologiesContext';
 import { NotificationProvider } from './contexts/NotificationContext';
-import ApiSearch from './components/ApiSearch';
+import { ThemeProvider as AppThemeProvider } from './contexts/ThemeContext'; // ⭐ NEW
+
+// MUI Theme
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { getMuiTheme } from './theme/muiTheme';                 // ⭐ NEW
+
 
 function AppContent() {
   const { language } = useLanguage();
   const t = translations[language];
+
+  const { theme } = useThemeMode();        // ⭐ получение режима темы (light/dark)
+  const muiTheme = getMuiTheme(theme);     // ⭐ создание MUI темы
 
   const {
     technologies,
@@ -31,14 +47,14 @@ function AppContent() {
     toggleStatus,
     markAllCompleted,
     resetAllStatuses,
-    removeTechnology,
+    removeTechnology
   } = useTechnologies();
 
   useEffect(() => {
-    const savedSettings = localStorage.getItem('appSettings');
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      if (settings.theme === 'dark') {
+    const saved = localStorage.getItem('appSettings');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.theme === 'dark') {
         document.documentElement.classList.add('dark-theme');
       }
     }
@@ -47,103 +63,117 @@ function AppContent() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const statusFilteredTechnologies = technologies.filter((tech) => {
-    if (activeFilter === 'all') return true;
-    return tech.status === activeFilter;
-  });
+  const statusFiltered = technologies.filter((tech) =>
+    activeFilter === 'all' ? true : tech.status === activeFilter
+  );
 
-  const filteredTechnologies = statusFilteredTechnologies.filter((tech) =>
+  const filteredTechnologies = statusFiltered.filter((tech) =>
     tech.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tech.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="App">
+    <MuiThemeProvider theme={muiTheme}>
+      <div className="App">
+        <Navigation />
+        <Notification />
 
-      <Navigation />
-      <Notification />
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/api-search" element={<ApiSearch />} />
 
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/api-search" element={<ApiSearch />} />
+          <Route
+            path="/home"
+            element={
+              <div>
+                <ProgressHeader technologies={technologies} />
 
-        <Route
-          path="/home"
-          element={
-            <div>
-              <ProgressHeader technologies={technologies} />
-
-              <QuickActions
-                onMarkAllCompleted={markAllCompleted}
-                onResetAll={resetAllStatuses}
-                onToggleStatus={toggleStatus}   // ← ДОБАВЛЕНО!
-              />
-
-              <div className="search-box"
-                style={{
-                  margin: '20px 0',
-                  padding: '15px',
-                  backgroundColor: '#f8f9fa',
-                  borderRadius: '8px',
-                }}>
-                <input
-                  type="text"
-                  placeholder={t.home.searchPlaceholder}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{
-                    padding: '10px',
-                    width: '300px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    marginRight: '10px',
-                  }}
+                <QuickActions
+                  onMarkAllCompleted={markAllCompleted}
+                  onResetAll={resetAllStatuses}
+                  onToggleStatus={toggleStatus}
                 />
-                <span style={{ color: '#666' }}>
-                  {t.home.found}: <strong>{filteredTechnologies.length}</strong> {t.home.of} {technologies.length}
-                </span>
+
+                <div
+                  className="search-box"
+                  style={{
+                    margin: '20px 0',
+                    padding: '15px',
+                    backgroundColor: '#f8f9fa',
+                    borderRadius: '8px'
+                  }}
+                >
+                  <input
+                    type="text"
+                    placeholder={t.home.searchPlaceholder}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                      padding: '10px',
+                      width: '300px',
+                      border: '1px solid #ddd',
+                      borderRadius: '4px',
+                      marginRight: '10px'
+                    }}
+                  />
+                  <span style={{ color: '#666' }}>
+                    {t.home.found}:{' '}
+                    <strong>{filteredTechnologies.length}</strong> {t.home.of}{' '}
+                    {technologies.length}
+                  </span>
+                </div>
+
+                <FilterButtons
+                  activeFilter={activeFilter}
+                  onFilterChange={setActiveFilter}
+                />
+
+                <div className="technologies-list">
+                  {filteredTechnologies.length > 0 ? (
+                    filteredTechnologies.map((tech) => (
+                      <TechnologyCard
+                        key={tech.id}
+                        id={tech.id}
+                        title={tech.title}
+                        description={tech.description}
+                        status={tech.status}
+                        notes={tech.notes}
+                        startDate={tech.startDate}
+                        deadline={tech.deadline}
+                        estimatedHours={tech.estimatedHours}
+                        priority={tech.priority}
+                        deadlineNotes={tech.deadlineNotes}
+                        onStatusChange={toggleStatus}
+                        onNotesChange={updateNotes}
+                        onDelete={removeTechnology}
+                      />
+                    ))
+                  ) : (
+                    <p
+                      style={{
+                        textAlign: 'center',
+                        color: '#666',
+                        padding: '40px'
+                      }}
+                    >
+                      {t.home.noTechnologies}
+                    </p>
+                  )}
+                </div>
               </div>
+            }
+          />
 
-              <FilterButtons activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/settings" element={<Settings />} />
 
-              <div className="technologies-list">
-                {filteredTechnologies.length > 0 ? (
-                  filteredTechnologies.map((tech) => (
-                    <TechnologyCard
-                      key={tech.id}
-                      id={tech.id}
-                      title={tech.title}
-                      description={tech.description}
-                      status={tech.status}
-                      notes={tech.notes}
-                      startDate={tech.startDate}
-                      deadline={tech.deadline}
-                      estimatedHours={tech.estimatedHours}
-                      priority={tech.priority}
-                      deadlineNotes={tech.deadlineNotes}
-                      onStatusChange={toggleStatus}
-                      onNotesChange={updateNotes}
-                      onDelete={removeTechnology}
-                    />
-                  ))
-                ) : (
-                  <p style={{ textAlign: 'center', color: '#666', padding: '40px' }}>
-                    {t.home.noTechnologies}
-                  </p>
-                )}
-              </div>
-            </div>
-          }
-        />
-
-        <Route path="/stats" element={<Stats />} />
-        <Route path="/settings" element={<Settings />} />
-
-        <Route path="*" element={<Navigate to="/home" replace />} />
-      </Routes>
-    </div>
+          <Route path="*" element={<Navigate to="/home" replace />} />
+        </Routes>
+      </div>
+    </MuiThemeProvider>
   );
 }
+
 
 function App() {
   return (
@@ -151,7 +181,9 @@ function App() {
       <NotificationProvider>
         <TechnologiesProvider>
           <LanguageProvider>
-            <AppContent />
+            <AppThemeProvider>
+              <AppContent />
+            </AppThemeProvider>
           </LanguageProvider>
         </TechnologiesProvider>
       </NotificationProvider>

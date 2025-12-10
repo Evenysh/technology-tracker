@@ -182,3 +182,32 @@
 .dark-theme .modal-title {
   color: #2d0055 !important;
 }
+
+
+/* === ДОБАВЛЕНО ДЛЯ ТЁМНОЙ ТЕМЫ И ТЕКСТА === */
+
+/* чтобы текст внутри модального окна был виден и в тёмной теме */
+.dark-theme .modal-window {
+  background-color: #ffffff;        /* белый фон модалки даже в тёмной теме */
+  color: #000000;                   /* чёрный текст внутри */
+}
+
+.dark-theme .modal-header {
+  background-color: #ffffff;
+  color: #000000;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-theme .modal-content {
+  color: #000000;
+}
+
+/* чтобы кнопка закрытия тоже выглядела нормально */
+.dark-theme .modal-close {
+  color: #666666;
+}
+
+.dark-theme .modal-close:hover {
+  background-color: #f0f0f0;
+  color: #333333;
+}
