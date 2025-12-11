@@ -1,0 +1,16 @@
+{
+  "id": 7,
+  "name": "Vue.js",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Vue 3 Documentation",
+      "url": "https://vuejs.org/guide/introduction.html"
+    },
+    {
+      "type": "tutorial",
+      "title": "Vue.js Crash Course",
+      "url": "https://www.youtube.com/watch?v=FXpIoQ_rT_c"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": 9,
+  "name": "Next.js",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Next.js Docs",
+      "url": "https://nextjs.org/docs"
+    },
+    {
+      "type": "tutorial",
+      "title": "Next.js Crash Course",
+      "url": "https://www.youtube.com/watch?v=1WmNXEVia8I"
+    }
+  ]
+}

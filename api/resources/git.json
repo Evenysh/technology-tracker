@@ -1,0 +1,16 @@
+{
+  "id": 12,
+  "name": "Git",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Git Documentation",
+      "url": "https://git-scm.com/doc"
+    },
+    {
+      "type": "tutorial",
+      "title": "Git Crash Course",
+      "url": "https://www.youtube.com/watch?v=SWYqp7iY_Tc"
+    }
+  ]
+}

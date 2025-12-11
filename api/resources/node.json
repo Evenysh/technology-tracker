@@ -1,0 +1,16 @@
+{
+  "id": 2,
+  "name": "Node.js",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Official Node.js docs",
+      "url": "https://nodejs.org/en/docs"
+    },
+    {
+      "type": "guide",
+      "title": "Node.js Guide",
+      "url": "https://www.freecodecamp.org/news/nodejs-tutorial/"
+    }
+  ]
+}

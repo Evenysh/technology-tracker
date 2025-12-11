@@ -1,0 +1,16 @@
+{
+  "id": 3,
+  "name": "TypeScript",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Official TypeScript docs",
+      "url": "https://www.typescriptlang.org/docs/"
+    },
+    {
+      "type": "course",
+      "title": "Beginner's Guide to TypeScript",
+      "url": "https://www.youtube.com/watch?v=d56mG7DezGs"
+    }
+  ]
+}
