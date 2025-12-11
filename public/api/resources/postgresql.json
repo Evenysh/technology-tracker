@@ -1,0 +1,16 @@
+{
+  "id": 8,
+  "name": "PostgreSQL",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "PostgreSQL Documentation",
+      "url": "https://www.postgresql.org/docs/"
+    },
+    {
+      "type": "guide",
+      "title": "Learn PostgreSQL",
+      "url": "https://www.freecodecamp.org/news/learn-postgresql/"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": 4,
+  "name": "MongoDB",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "MongoDB Manual",
+      "url": "https://www.mongodb.com/docs/"
+    },
+    {
+      "type": "tutorial",
+      "title": "MongoDB Basics",
+      "url": "https://www.freecodecamp.org/news/learn-mongodb-a4ce205e7739/"
+    }
+  ]
+}

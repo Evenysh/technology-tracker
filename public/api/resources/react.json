@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "name": "React",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Official React docs",
+      "url": "https://react.dev"
+    },
+    {
+      "type": "tutorial",
+      "title": "React for Beginners",
+      "url": "https://www.freecodecamp.org/news/the-react-handbook/"
+    }
+  ]
+}

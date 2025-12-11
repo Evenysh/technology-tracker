@@ -1,0 +1,16 @@
+{
+  "id": 6,
+  "name": "GraphQL",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "GraphQL Official Docs",
+      "url": "https://graphql.org/learn/"
+    },
+    {
+      "type": "tutorial",
+      "title": "GraphQL Basics",
+      "url": "https://www.howtographql.com/"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": 5,
+  "name": "Docker",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Docker Documentation",
+      "url": "https://docs.docker.com/"
+    },
+    {
+      "type": "guide",
+      "title": "Docker for Beginners",
+      "url": "https://docker-curriculum.com/"
+    }
+  ]
+}

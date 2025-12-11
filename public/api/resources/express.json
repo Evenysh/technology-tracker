@@ -1,0 +1,16 @@
+{
+  "id": 10,
+  "name": "Express.js",
+  "resources": [
+    {
+      "type": "docs",
+      "title": "Express Documentation",
+      "url": "https://expressjs.com/en/guide/routing.html"
+    },
+    {
+      "type": "tutorial",
+      "title": "Express.js Tutorial",
+      "url": "https://www.freecodecamp.org/news/learn-express-js/"
+    }
+  ]
+}
