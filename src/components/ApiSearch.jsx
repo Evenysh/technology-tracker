@@ -10,6 +10,9 @@ function ApiSearch() {
   const { addTechnology, technologyExists } = useTechnologies();
   const t = translations[language].apiSearch;
 
+  // общая база для путей (важно для GitHub Pages)
+  const BASE = import.meta.env.BASE_URL || "/";
+
   // Состояния поиска технологий
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
@@ -41,8 +44,8 @@ function ApiSearch() {
   // URL до JSON с технологиями в зависимости от языка
   const API_URL =
     language === "ru"
-      ? `${import.meta.env.BASE_URL}api/technologies_ru.json`
-      : `${import.meta.env.BASE_URL}api/technologies_en.json`;
+      ? `${BASE}api/technologies_ru.json`
+      : `${BASE}api/technologies_en.json`;
 
   /**
    * Загрузка списка технологий из API:
@@ -53,7 +56,6 @@ function ApiSearch() {
    */
   const fetchTechnologies = useCallback(
     async (query = "", category = "all") => {
-      // Отменяем предыдущий запрос, если он ещё в работе
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
@@ -81,7 +83,6 @@ function ApiSearch() {
         let items = data;
         const trimmedQuery = query.trim().toLowerCase();
 
-        // Поиск по названию и описанию
         if (trimmedQuery) {
           items = items.filter(
             (t) =>
@@ -90,12 +91,10 @@ function ApiSearch() {
           );
         }
 
-        // Фильтрация по категории
         if (category !== "all") {
           items = items.filter((t) => t.category === category);
         }
 
-        // Помечаем, какие уже добавлены в трекер
         const processed = items.map((tech) => ({
           ...tech,
           isAdded:
@@ -118,12 +117,10 @@ function ApiSearch() {
     [API_URL, addedTechnologies, technologyExists, language]
   );
 
-  // Загрузить все технологии (начальная загрузка / сброс фильтров)
   const loadAllTechnologies = useCallback(() => {
     fetchTechnologies("", selectedCategory);
   }, [fetchTechnologies, selectedCategory]);
 
-  // Поиск технологий с учётом категории
   const searchTechnologies = useCallback(
     (query) => {
       fetchTechnologies(query, selectedCategory);
@@ -131,7 +128,6 @@ function ApiSearch() {
     [fetchTechnologies, selectedCategory]
   );
 
-  // Обработчик ввода поиска с debounce
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -142,19 +138,16 @@ function ApiSearch() {
 
     const trimmed = value.trim();
 
-    // Если поле очищено — загружаем всё
     if (!trimmed) {
       loadAllTechnologies();
       return;
     }
 
-    // Debounce 600 мс
     searchTimeoutRef.current = setTimeout(() => {
       searchTechnologies(trimmed);
     }, 600);
   };
 
-  // Переключение категории
   const handleCategoryChange = (cat) => {
     setSelectedCategory(cat);
 
@@ -165,12 +158,10 @@ function ApiSearch() {
     }
   };
 
-  // Начальная загрузка при первом появлении компонента
   useEffect(() => {
     loadAllTechnologies();
   }, [loadAllTechnologies]);
 
-  // Очистка таймера и AbortController при размонтировании
   useEffect(() => {
     return () => {
       if (searchTimeoutRef.current) {
@@ -182,7 +173,6 @@ function ApiSearch() {
     };
   }, []);
 
-  // Добавление технологии в трекер
   const handleAddToTracker = (tech) => {
     if (technologyExists(tech.name)) {
       alert(
@@ -213,7 +203,6 @@ function ApiSearch() {
     );
   };
 
-  // Текст для бейджа популярности
   const getPopularityText = (p) => {
     const icons = { high: "🔥", medium: "⚡", low: "✨" };
     const texts = {
@@ -224,7 +213,6 @@ function ApiSearch() {
     return `${icons[p]} ${texts[p]}`;
   };
 
-  // Сброс фильтров
   const handleResetFilters = () => {
     setSearchTerm("");
     setSelectedCategory("all");
@@ -232,23 +220,19 @@ function ApiSearch() {
   };
 
   /**
-   * Загрузка ресурсов для конкретной технологии
-   * - имя технологии -> имя файла (react.json, node.json, vue.json и т.д.)
-   * - сохраняем ресурсы в techResources[tech.name]
+   * Загрузка ресурсов для конкретной технологии.
+   * Здесь главное изменение: используем BASE для корректного пути
+   * и строим имя файла по названию технологии.
    */
   const loadResources = async (techName) => {
     setResourcesLoading(true);
     setResourcesError(null);
     setActiveResourceTech(techName);
 
-    // Преобразуем название технологии в имя файла:
-    // "React" -> "react.json"
-    // "Node.js" -> "node.json"
-    // "Vue.js" -> "vue.json"
     const filename =
       techName.toLowerCase().replace(/\.js$/, "").trim() + ".json";
 
-    const url = `${import.meta.env.BASE_URL}api/resources/${filename}`;
+    const url = `${BASE}api/resources/${filename}`;
 
     try {
       const response = await fetch(url);
@@ -403,7 +387,7 @@ function ApiSearch() {
                 </button>
               </div>
 
-              {/* Загрузка / ошибка ресурсов именно для этой технологии */}
+              {/* Загрузка / ошибка ресурсов для конкретной технологии */}
               {activeResourceTech === tech.name && resourcesLoading && (
                 <p className="loading-small">
                   {language === "ru"
