@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "React",
+    "description": "Библиотека для создания пользовательских интерфейсов",
+    "category": "frontend",
+    "popularity": "high",
+    "website": "https://react.dev"
+  },
+  {
+    "id": 2,
+    "name": "Node.js",
+    "description": "Среда выполнения JavaScript на сервере",
+    "category": "backend",
+    "popularity": "high",
+    "website": "https://nodejs.org"
+  },
+  {
+    "id": 3,
+    "name": "TypeScript",
+    "description": "Типизированное надмножество JavaScript",
+    "category": "language",
+    "popularity": "high",
+    "website": "https://typescriptlang.org"
+  },
+  {
+    "id": 4,
+    "name": "MongoDB",
+    "description": "Документо-ориентированная NoSQL база данных",
+    "category": "database",
+    "popularity": "medium",
+    "website": "https://mongodb.com"
+  },
+  {
+    "id": 5,
+    "name": "Docker",
+    "description": "Платформа для контейнеризации приложений",
+    "category": "tool",
+    "popularity": "high",
+    "website": "https://docker.com"
+  },
+  {
+    "id": 6,
+    "name": "GraphQL",
+    "description": "Язык запросов для API",
+    "category": "backend",
+    "popularity": "medium",
+    "website": "https://graphql.org"
+  },
+  {
+    "id": 7,
+    "name": "Vue.js",
+    "description": "Прогрессивный JavaScript-фреймворк",
+    "category": "frontend",
+    "popularity": "high",
+    "website": "https://vuejs.org"
+  },
+  {
+    "id": 8,
+    "name": "PostgreSQL",
+    "description": "Реляционная база данных",
+    "category": "database",
+    "popularity": "high",
+    "website": "https://postgresql.org"
+  },
+  {
+    "id": 9,
+    "name": "Next.js",
+    "description": "React-фреймворк для продакшена",
+    "category": "frontend",
+    "popularity": "high",
+    "website": "https://nextjs.org"
+  },
+  {
+    "id": 10,
+    "name": "Express.js",
+    "description": "Минималистичный веб-фреймворк",
+    "category": "backend",
+    "popularity": "high",
+    "website": "https://expressjs.com"
+  },
+  {
+    "id": 11,
+    "name": "Python",
+    "description": "Язык программирования общего назначения",
+    "category": "language",
+    "popularity": "high",
+    "website": "https://python.org"
+  },
+  {
+    "id": 12,
+    "name": "Git",
+    "description": "Система контроля версий",
+    "category": "tool",
+    "popularity": "high",
+    "website": "https://git-scm.com"
+  }
+]
