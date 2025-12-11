@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "React",
+    "description": "A library for building user interfaces",
+    "category": "frontend",
+    "popularity": "high",
+    "website": "https://react.dev"
+  },
+  {
+    "id": 2,
+    "name": "Node.js",
+    "description": "JavaScript runtime built on Chrome's V8 engine",
+    "category": "backend",
+    "popularity": "high",
+    "website": "https://nodejs.org"
+  },
+  {
+    "id": 3,
+    "name": "TypeScript",
+    "description": "Typed superset of JavaScript",
+    "category": "language",
+    "popularity": "high",
+    "website": "https://typescriptlang.org"
+  },
+  {
+    "id": 4,
+    "name": "MongoDB",
+    "description": "Document-oriented NoSQL DB",
+    "category": "database",
+    "popularity": "medium",
+    "website": "https://mongodb.com"
+  },
+  {
+    "id": 5,
+    "name": "Docker",
+    "description": "Container platform",
+    "category": "tool",
+    "popularity": "high",
+    "website": "https://docker.com"
+  },
+  {
+    "id": 6,
+    "name": "GraphQL",
+    "description": "A query language for APIs",
+    "category": "backend",
+    "popularity": "medium",
+    "website": "https://graphql.org"
+  },
+  {
+    "id": 7,
+    "name": "Vue.js",
+    "description": "Progressive JavaScript framework",
+    "category": "frontend",
+    "popularity": "high",
+    "website": "https://vuejs.org"
+  },
+  {
+    "id": 8,
+    "name": "PostgreSQL",
+    "description": "Relational database management system",
+    "category": "database",
+    "popularity": "high",
+    "website": "https://postgresql.org"
+  },
+  {
+    "id": 9,
+    "name": "Next.js",
+    "description": "React framework for production",
+    "category": "frontend",
+    "popularity": "high",
+    "website": "https://nextjs.org"
+  },
+  {
+    "id": 10,
+    "name": "Express.js",
+    "description": "Minimalist web framework for Node.js",
+    "category": "backend",
+    "popularity": "high",
+    "website": "https://expressjs.com"
+  },
+  {
+    "id": 11,
+    "name": "Python",
+    "description": "General-purpose programming language",
+    "category": "language",
+    "popularity": "high",
+    "website": "https://python.org"
+  },
+  {
+    "id": 12,
+    "name": "Git",
+    "description": "Version control system",
+    "category": "tool",
+    "popularity": "high",
+    "website": "https://git-scm.com"
+  }
+]
