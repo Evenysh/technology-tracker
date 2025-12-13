@@ -2,7 +2,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,   // ✅ ВАЖНО: HashRouter вместо BrowserRouter
   Routes,
   Route,
   Navigate
@@ -10,7 +10,7 @@ import {
 
 import { useLanguage } from './contexts/LanguageContext';
 import { useTechnologies } from './contexts/TechnologiesContext';
-import { useThemeMode } from './contexts/ThemeContext';        // ⭐ NEW
+import { useThemeMode } from './contexts/ThemeContext';
 import { translations } from './i18n/translations';
 
 import ProgressHeader from './components/ProgressHeader';
@@ -27,19 +27,18 @@ import Settings from '../pages/Settings';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { TechnologiesProvider } from './contexts/TechnologiesContext';
 import { NotificationProvider } from './contexts/NotificationContext';
-import { ThemeProvider as AppThemeProvider } from './contexts/ThemeContext'; // ⭐ NEW
+import { ThemeProvider as AppThemeProvider } from './contexts/ThemeContext';
 
 // MUI Theme
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { getMuiTheme } from './theme/muiTheme';                 // ⭐ NEW
-
+import { getMuiTheme } from './theme/muiTheme';
 
 function AppContent() {
   const { language } = useLanguage();
   const t = translations[language];
 
-  const { theme } = useThemeMode();        // ⭐ получение режима темы (light/dark)
-  const muiTheme = getMuiTheme(theme);     // ⭐ создание MUI темы
+  const { theme } = useThemeMode();
+  const muiTheme = getMuiTheme(theme);
 
   const {
     technologies,
@@ -173,7 +172,6 @@ function AppContent() {
     </MuiThemeProvider>
   );
 }
-
 
 function App() {
   return (
