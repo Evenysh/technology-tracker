@@ -94,7 +94,10 @@ const getInitialTechnologies = (language = 'ru') => {
       estimatedHours: 40,
       priority: 'high',
       deadlineNotes: 'Изучить хуки и контекст',
-      category: 'frontend'
+      category: 'frontend',
+
+      // ✅ НОВОЕ (для 24 практики): ресурсы по технологии
+      resources: []
     },
     {
       id: 2,
@@ -112,7 +115,10 @@ const getInitialTechnologies = (language = 'ru') => {
       estimatedHours: 0,
       priority: 'medium',
       deadlineNotes: '',
-      category: 'frontend'
+      category: 'frontend',
+
+      // ✅ НОВОЕ
+      resources: []
     },
     {
       id: 3,
@@ -129,7 +135,10 @@ const getInitialTechnologies = (language = 'ru') => {
       estimatedHours: 20,
       priority: 'low',
       deadlineNotes: '',
-      category: 'tool'
+      category: 'tool',
+
+      // ✅ НОВОЕ
+      resources: []
     },
     {
       id: 4,
@@ -146,7 +155,10 @@ const getInitialTechnologies = (language = 'ru') => {
       estimatedHours: 15,
       priority: 'medium',
       deadlineNotes: '',
-      category: 'frontend'
+      category: 'frontend',
+
+      // ✅ НОВОЕ
+      resources: []
     },
     {
       id: 5,
@@ -163,7 +175,10 @@ const getInitialTechnologies = (language = 'ru') => {
       estimatedHours: 25,
       priority: 'low',
       deadlineNotes: '',
-      category: 'frontend'
+      category: 'frontend',
+
+      // ✅ НОВОЕ
+      resources: []
     }
   ];
 };
@@ -176,9 +191,11 @@ export function TechnologiesProvider({ children }) {
       if (saved) {
         const parsed = JSON.parse(saved);
         // Преобразуем все estimatedHours в числа при загрузке
+        // ✅ НОВОЕ: добавляем страховку resources, если раньше их не было
         return parsed.map(tech => ({
           ...tech,
-          estimatedHours: tech.estimatedHours !== undefined ? Number(tech.estimatedHours) : 0
+          estimatedHours: tech.estimatedHours !== undefined ? Number(tech.estimatedHours) : 0,
+          resources: Array.isArray(tech.resources) ? tech.resources : []
         }));
       }
       return getInitialTechnologies();
@@ -246,7 +263,10 @@ export function TechnologiesProvider({ children }) {
       priority: techData.priority || 'medium',
       deadlineNotes: techData.deadlineNotes || '',
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+
+      // ✅ НОВОЕ (для 24 практики): ресурсы сохраняем в технологию
+      resources: Array.isArray(techData.resources) ? techData.resources : []
     };
 
     setTechnologies(prev => [...prev, newTech]);
@@ -298,7 +318,10 @@ export function TechnologiesProvider({ children }) {
         startDate: '',
         deadline: '',
         estimatedHours: 0,
-        deadlineNotes: ''
+        deadlineNotes: '',
+
+        // ✅ НОВОЕ: ресурсы тоже очищаем (после "Очистить все данные")
+        resources: []
 
         // priority НЕ трогаем — остаётся как в базе (high/medium/low и т.д.)
       };
@@ -317,6 +340,22 @@ export function TechnologiesProvider({ children }) {
   // Функция: Удаление всех технологий
   const clearAllTechnologies = useCallback(() => {
     setTechnologies([]);
+  }, []);
+
+  // ✅ НОВОЕ (для 24 практики): сохранить ресурсы в технологию по id
+  // Это "использование данных из API внутри логики приложения", а не просто показ на экране.
+  const addResourcesToTechnology = useCallback((id, resources) => {
+    setTechnologies(prev =>
+      prev.map(tech =>
+        tech.id === id
+          ? {
+              ...tech,
+              resources: Array.isArray(resources) ? resources : [],
+              updatedAt: new Date().toISOString()
+            }
+          : tech
+      )
+    );
   }, []);
 
   // ФУНКЦИЯ: Обновление сроков технологии (ИСПРАВЛЕНА!)
@@ -450,12 +489,17 @@ export function TechnologiesProvider({ children }) {
     resetAllData,
     clearAllTechnologies,
     technologyExists,
+
     // Новые функции для сроков
     updateDeadline,
     bulkUpdateDeadlines,
     bulkUpdateStatuses,
     getDeadlineProgress,
     getOverdueTechnologies,
+
+    // ✅ НОВОЕ (для 24 практики)
+    addResourcesToTechnology,
+
     progress
   };
 

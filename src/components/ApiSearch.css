@@ -586,6 +586,58 @@
 }
 
 
+/* ===== Dark theme for API Search (cards stay light) ===== */
+.dark-theme .api-search {
+  background: #121317;
+  color: #f2f2f2;
+}
+
+/* заголовки/подписи */
+.dark-theme .api-search .search-header .subtitle {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* зона контролов (поиск + фильтры) */
+.dark-theme .api-search .search-controls {
+  background: transparent;
+}
+
+.dark-theme .api-search .search-input {
+  background: #1f2127;
+  color: #f2f2f2;
+  border-color: #333844;
+}
+
+.dark-theme .api-search .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* кнопки фильтра */
+.dark-theme .api-search .category-btn {
+  background: #1f2127;
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #333844;
+}
+
+.dark-theme .api-search .category-btn.active {
+  background: #2a2d34;
+  border-color: #4a4f5d;
+  color: #fff;
+}
+
+.dark-theme .api-search .reset-filters-btn,
+.dark-theme .api-search .clear-search-btn {
+  background: #2a2d34;
+  color: #f2f2f2;
+  border: 1px solid #3a3f4a;
+}
+
+/* ошибки */
+.dark-theme .api-search .error-message {
+  background: rgba(176, 0, 32, 0.18);
+  color: #ffb4c0;
+  border: 1px solid rgba(176, 0, 32, 0.25);
+}
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .results-grid {

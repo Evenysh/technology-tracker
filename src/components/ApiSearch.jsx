@@ -7,7 +7,15 @@ import "./ApiSearch.css";
 
 function ApiSearch() {
   const { language } = useLanguage();
-  const { addTechnology, technologyExists } = useTechnologies();
+
+  // 🔥 NEW: добавили technologies и addResourcesToTechnology, НИЧЕГО не убирая
+  const {
+    addTechnology,
+    technologyExists,
+    technologies,
+    addResourcesToTechnology
+  } = useTechnologies();
+
   const t = translations[language].apiSearch;
 
   // общая база для путей (важно для GitHub Pages)
@@ -215,8 +223,10 @@ function ApiSearch() {
    * 🔥 Toggle-загрузка ресурсов:
    * - повторный клик → сворачивает
    * - если ресурсы уже есть → не грузим повторно
+   * - ✅ сохраняем ресурсы в TechnologiesContext (чтобы 24 была "на 100%")
    */
   const loadResources = async (techName) => {
+    // повторный клик → закрываем
     if (activeResourceTech === techName) {
       setActiveResourceTech(null);
       setResourcesError(null);
@@ -226,7 +236,15 @@ function ApiSearch() {
     setActiveResourceTech(techName);
     setResourcesError(null);
 
+    // если уже загружено — не фетчим повторно
     if (techResources[techName]) {
+      // ✅ даже если не фетчим, можно "пробросить" в context, если технология уже есть
+      const techInTracker = technologies?.find(
+        (t) => (t.title || "").toLowerCase() === techName.toLowerCase()
+      );
+      if (techInTracker && typeof addResourcesToTechnology === "function") {
+        addResourcesToTechnology(techInTracker.id, techResources[techName]);
+      }
       return;
     }
 
@@ -247,6 +265,15 @@ function ApiSearch() {
         ...prev,
         [techName]: data.resources,
       }));
+
+      // ✅ NEW: сохраняем ресурсы в глобальном состоянии приложения (Context)
+      const techInTracker = technologies?.find(
+        (t) => (t.title || "").toLowerCase() === techName.toLowerCase()
+      );
+
+      if (techInTracker && typeof addResourcesToTechnology === "function") {
+        addResourcesToTechnology(techInTracker.id, data.resources);
+      }
     } catch (err) {
       setResourcesError(err.message);
     } finally {

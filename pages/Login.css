@@ -61,3 +61,37 @@
   color: #666;
   font-size: 14px;
 }
+
+
+/* ===== Dark theme fixes for Login ===== */
+.dark-theme .login-card {
+  background: #1f2127;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+.dark-theme .login-card h1,
+.dark-theme .login-card h2,
+.dark-theme .login-card h3,
+.dark-theme .login-card p,
+.dark-theme .login-card label {
+  color: #f2f2f2;
+}
+
+.dark-theme .form-group input {
+  background: #2a2d34;
+  color: #f2f2f2;
+  border-color: #3a3f4a;
+}
+
+.dark-theme .form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.dark-theme .login-hint {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dark-theme .login-error {
+  background: rgba(176, 0, 32, 0.15);
+  color: #ffb4c0;
+}
