@@ -26,7 +26,7 @@ const TECHNOLOGY_TRANSLATIONS = {
   },
   'node-js': {
     ru: 'Среда выполнения JavaScript на сервере',
-    en: 'JavaScript runtime built on Chrome\'s V8 JavaScript engine'
+    en: "JavaScript runtime built on Chrome's V8 JavaScript engine"
   },
   mongodb: {
     ru: 'Документо-ориентированная NoSQL база данных',
@@ -81,7 +81,11 @@ const getInitialTechnologies = (language = 'ru') => {
     {
       id: 1,
       title: 'React',
-      description: getTechnologyTranslation('React', language) || 'Библиотека для создания пользовательских интерфейсов',
+      description:
+        getTechnologyTranslation('React', language) ||
+        (language === 'ru'
+          ? 'Библиотека для создания пользовательских интерфейсов'
+          : 'A library for building user interfaces'),
       status: 'in-progress',
       notes: '',
       // Новые поля для сроков
@@ -95,7 +99,11 @@ const getInitialTechnologies = (language = 'ru') => {
     {
       id: 2,
       title: 'TypeScript',
-      description: getTechnologyTranslation('TypeScript', language) || 'Статическая типизация для JavaScript',
+      description:
+        getTechnologyTranslation('TypeScript', language) ||
+        (language === 'ru'
+          ? 'Статическая типизация для JavaScript'
+          : 'Static typing for JavaScript'),
       status: 'not-started',
       notes: '',
       // Новые поля для сроков
@@ -109,7 +117,11 @@ const getInitialTechnologies = (language = 'ru') => {
     {
       id: 3,
       title: 'Vite',
-      description: getTechnologyTranslation('Vite', language) || 'Современный инструмент сборки',
+      description:
+        getTechnologyTranslation('Vite', language) ||
+        (language === 'ru'
+          ? 'Современный инструмент сборки'
+          : 'Modern build tool'),
       status: 'completed',
       notes: '',
       startDate: '',
@@ -122,7 +134,11 @@ const getInitialTechnologies = (language = 'ru') => {
     {
       id: 4,
       title: 'React Router',
-      description: getTechnologyTranslation('React Router', language) || 'Маршрутизация для React приложений',
+      description:
+        getTechnologyTranslation('React Router', language) ||
+        (language === 'ru'
+          ? 'Маршрутизация для React приложений'
+          : 'Routing for React applications'),
       status: 'in-progress',
       notes: '',
       startDate: '',
@@ -135,7 +151,11 @@ const getInitialTechnologies = (language = 'ru') => {
     {
       id: 5,
       title: 'CSS-in-JS',
-      description: getTechnologyTranslation('CSS-in-JS', language) || 'Стилизация компонентов в JavaScript',
+      description:
+        getTechnologyTranslation('CSS-in-JS', language) ||
+        (language === 'ru'
+          ? 'Стилизация компонентов в JavaScript'
+          : 'Styling components in JavaScript'),
       status: 'not-started',
       notes: '',
       startDate: '',
@@ -228,13 +248,13 @@ export function TechnologiesProvider({ children }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    
+
     setTechnologies(prev => [...prev, newTech]);
     return newTech;
   }, []);
 
   const updateNotes = useCallback((id, notes) => {
-    setTechnologies(prev => prev.map(tech => 
+    setTechnologies(prev => prev.map(tech =>
       tech.id === id ? { ...tech, notes } : tech
     ));
   }, []);
@@ -259,23 +279,37 @@ export function TechnologiesProvider({ children }) {
     setTechnologies(prev => prev.map(tech => ({ ...tech, status: 'not-started' })));
   }, []);
 
-  // Функция: Полный сброс ВСЕХ данных
+  // ✅ Функция: Полный сброс ВСЕХ данных (ИСПРАВЛЕНА ПО ТВОЕМУ ТЗ)
+  // Требование: priority остаётся как в базе, но сроки/часы/заметки по срокам должны очищаться у ВСЕХ технологий.
   const resetAllData = useCallback(() => {
     const resetTechnologies = getInitialTechnologies(currentLanguage).map(tech => {
       const translation = getTechnologyTranslation(tech.title, currentLanguage) || tech.description;
+
       return {
         ...tech,
         description: translation,
+
+        // сбрасываем прогресс и заметки
         status: 'not-started',
-        notes: ''
+        notes: '',
+
+        // 🔥 КЛЮЧЕВОЕ: очищаем дедлайны/часы/заметки по срокам ДЛЯ ВСЕХ,
+        // чтобы первая технология (React) не оставалась "особенной"
+        startDate: '',
+        deadline: '',
+        estimatedHours: 0,
+        deadlineNotes: ''
+
+        // priority НЕ трогаем — остаётся как в базе (high/medium/low и т.д.)
       };
     });
+
     setTechnologies(resetTechnologies);
   }, [currentLanguage]);
 
   // Функция: Проверка, существует ли уже технология с таким названием
   const technologyExists = useCallback((title) => {
-    return technologies.some(tech => 
+    return technologies.some(tech =>
       tech.title.toLowerCase() === title.toLowerCase()
     );
   }, [technologies]);
@@ -288,19 +322,19 @@ export function TechnologiesProvider({ children }) {
   // ФУНКЦИЯ: Обновление сроков технологии (ИСПРАВЛЕНА!)
   const updateDeadline = useCallback((id, deadlineData) => {
     console.log('🔄 Контекст: обновление дедлайна для технологии', { id, deadlineData });
-    
+
     setTechnologies(prev => {
       const updated = prev.map(tech => {
         if (tech.id === id) {
           console.log('📝 Найдена технология для обновления:', tech.title);
-          
+
           // ИСПРАВЛЕНО: правильное преобразование часов
           let estimatedHours = 0;
           if (deadlineData.estimatedHours !== undefined && deadlineData.estimatedHours !== null) {
             estimatedHours = Number(deadlineData.estimatedHours);
             if (isNaN(estimatedHours)) estimatedHours = 0;
           }
-          
+
           return {
             ...tech,
             startDate: deadlineData.startDate || tech.startDate || '',
@@ -313,14 +347,14 @@ export function TechnologiesProvider({ children }) {
         }
         return tech;
       });
-      
+
       try {
         localStorage.setItem('technologies', JSON.stringify(updated));
         console.log('💾 Данные сохранены в localStorage');
       } catch (error) {
         console.error('Ошибка сохранения в localStorage:', error);
       }
-      
+
       return updated;
     });
   }, []);
@@ -329,10 +363,10 @@ export function TechnologiesProvider({ children }) {
   const bulkUpdateDeadlines = useCallback((ids, deadlineData) => {
     setTechnologies(prev => prev.map(tech => {
       if (ids.includes(tech.id)) {
-        const estimatedHours = deadlineData.estimatedHours !== undefined 
-          ? Number(deadlineData.estimatedHours) 
+        const estimatedHours = deadlineData.estimatedHours !== undefined
+          ? Number(deadlineData.estimatedHours)
           : tech.estimatedHours;
-          
+
         return {
           ...tech,
           ...deadlineData,
@@ -347,7 +381,7 @@ export function TechnologiesProvider({ children }) {
   // ФУНКЦИЯ: Массовое обновление статусов (ДОБАВЛЕНО ДЛЯ ЗАДАНИЯ 2)
   const bulkUpdateStatuses = useCallback((changes) => {
     console.log('🔄 Контекст: массовое обновление статусов', changes);
-    
+
     setTechnologies(prev => {
       const updated = prev.map(tech => {
         const change = changes.find(c => c.id === tech.id);
@@ -361,14 +395,14 @@ export function TechnologiesProvider({ children }) {
         }
         return tech;
       });
-      
+
       try {
         localStorage.setItem('technologies', JSON.stringify(updated));
         console.log('💾 Данные сохранены в localStorage после массового обновления');
       } catch (error) {
         console.error('Ошибка сохранения в localStorage:', error);
       }
-      
+
       return updated;
     });
   }, []);
@@ -376,17 +410,17 @@ export function TechnologiesProvider({ children }) {
   // ФУНКЦИЯ: Расчет прогресса по времени для технологии
   const getDeadlineProgress = useCallback((tech) => {
     if (!tech.startDate || !tech.deadline) return null;
-    
+
     const start = new Date(tech.startDate);
     const deadline = new Date(tech.deadline);
     const today = new Date();
-    
+
     if (today < start) return 0;
     if (today > deadline) return 100;
-    
+
     const totalDays = (deadline - start) / (1000 * 60 * 60 * 24);
     const passedDays = (today - start) / (1000 * 60 * 60 * 24);
-    
+
     return Math.round((passedDays / totalDays) * 100);
   }, []);
 
@@ -399,7 +433,7 @@ export function TechnologiesProvider({ children }) {
     });
   }, [technologies]);
 
-  const progress = technologies.length > 0 
+  const progress = technologies.length > 0
     ? Math.round((technologies.filter(t => t.status === 'completed').length / technologies.length) * 100)
     : 0;
 
@@ -419,7 +453,7 @@ export function TechnologiesProvider({ children }) {
     // Новые функции для сроков
     updateDeadline,
     bulkUpdateDeadlines,
-    bulkUpdateStatuses, // ← ДОБАВЛЕНО ДЛЯ ЗАДАНИЯ 2
+    bulkUpdateStatuses,
     getDeadlineProgress,
     getOverdueTechnologies,
     progress
