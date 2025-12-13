@@ -1,11 +1,24 @@
-// src/components/ProtectedRoute.jsx
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-function ProtectedRoute({ children, isLoggedIn }) {
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+/**
+ * Обёртка для защищённых маршрутов
+ * Если пользователь не авторизован — редирект на /login
+ */
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: location }}
+      />
+    );
   }
-  
+
   return children;
 }
 
