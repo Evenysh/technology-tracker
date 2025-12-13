@@ -48,17 +48,14 @@ function ApiSearch() {
       : `${BASE}api/technologies_en.json`;
 
   /**
-   * Загрузка списка технологий из API:
-   * - fetch к technologies_XX.json
-   * - поиск по названию/описанию
-   * - фильтр по категории
-   * - пометки, какие технологии уже добавлены в трекер
+   * Загрузка списка технологий из API
    */
   const fetchTechnologies = useCallback(
     async (query = "", category = "all") => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
+
       const controller = new AbortController();
       abortControllerRef.current = controller;
 
@@ -98,7 +95,8 @@ function ApiSearch() {
         const processed = items.map((tech) => ({
           ...tech,
           isAdded:
-            addedTechnologies.has(tech.name) || technologyExists(tech.name),
+            addedTechnologies.has(tech.name) ||
+            technologyExists(tech.name),
         }));
 
         setResults(processed);
@@ -136,15 +134,13 @@ function ApiSearch() {
       clearTimeout(searchTimeoutRef.current);
     }
 
-    const trimmed = value.trim();
-
-    if (!trimmed) {
+    if (!value.trim()) {
       loadAllTechnologies();
       return;
     }
 
     searchTimeoutRef.current = setTimeout(() => {
-      searchTechnologies(trimmed);
+      searchTechnologies(value.trim());
     }, 600);
   };
 
@@ -164,12 +160,8 @@ function ApiSearch() {
 
   useEffect(() => {
     return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+      if (abortControllerRef.current) abortControllerRef.current.abort();
     };
   }, []);
 
@@ -220,14 +212,25 @@ function ApiSearch() {
   };
 
   /**
-   * Загрузка ресурсов для конкретной технологии.
-   * Здесь главное изменение: используем BASE для корректного пути
-   * и строим имя файла по названию технологии.
+   * 🔥 Toggle-загрузка ресурсов:
+   * - повторный клик → сворачивает
+   * - если ресурсы уже есть → не грузим повторно
    */
   const loadResources = async (techName) => {
-    setResourcesLoading(true);
-    setResourcesError(null);
+    if (activeResourceTech === techName) {
+      setActiveResourceTech(null);
+      setResourcesError(null);
+      return;
+    }
+
     setActiveResourceTech(techName);
+    setResourcesError(null);
+
+    if (techResources[techName]) {
+      return;
+    }
+
+    setResourcesLoading(true);
 
     const filename =
       techName.toLowerCase().replace(/\.js$/, "").trim() + ".json";
@@ -236,10 +239,7 @@ function ApiSearch() {
 
     try {
       const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error("Failed to load resources");
-      }
+      if (!response.ok) throw new Error("Failed to load resources");
 
       const data = await response.json();
 
@@ -320,10 +320,8 @@ function ApiSearch() {
         </div>
       </div>
 
-      {/* Ошибка загрузки списка технологий */}
       {error && <div className="error-message">⚠️ {error}</div>}
 
-      {/* Результаты */}
       <div className="search-results">
         <div className="results-grid">
           {results.map((tech) => (
@@ -356,14 +354,19 @@ function ApiSearch() {
               <p className="tech-description">{tech.description}</p>
 
               <div className="tech-actions">
-                <a
-                  href={tech.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
                   className="website-link"
+                  onClick={() => loadResources(tech.name)}
                 >
-                  {t.officialWebsite}
-                </a>
+                  {activeResourceTech === tech.name
+                    ? language === "ru"
+                      ? "Скрыть ресурсы"
+                      : "Hide resources"
+                    : language === "ru"
+                    ? "Показать ресурсы"
+                    : "Show resources"}
+                </button>
 
                 <button
                   className={`add-btn ${tech.isAdded ? "disabled" : ""}`}
@@ -376,18 +379,8 @@ function ApiSearch() {
                       : "Added"
                     : t.addToTracker}
                 </button>
-
-                <button
-                  className="secondary-btn"
-                  onClick={() => loadResources(tech.name)}
-                >
-                  {language === "ru"
-                    ? "Показать ресурсы"
-                    : "Show resources"}
-                </button>
               </div>
 
-              {/* Загрузка / ошибка ресурсов для конкретной технологии */}
               {activeResourceTech === tech.name && resourcesLoading && (
                 <p className="loading-small">
                   {language === "ru"
@@ -404,12 +397,9 @@ function ApiSearch() {
                 </p>
               )}
 
-              {/* Список ресурсов */}
-              {techResources[tech.name] && (
+              {techResources[tech.name] && activeResourceTech === tech.name && (
                 <div className="resource-list">
-                  <h5>
-                    {language === "ru" ? "Ресурсы:" : "Resources:"}
-                  </h5>
+                  <h5>{language === "ru" ? "Ресурсы:" : "Resources:"}</h5>
 
                   {techResources[tech.name].map((res, index) => (
                     <div key={index} className="resource-item">
