@@ -89,11 +89,11 @@ const getInitialTechnologies = (language = 'ru') => {
       status: 'in-progress',
       notes: '',
       // Новые поля для сроков
-      startDate: '2024-12-01',
-      deadline: '2024-12-31',
-      estimatedHours: 40,
+      startDate: '',
+      deadline: '',
+      estimatedHours: 0,
       priority: 'high',
-      deadlineNotes: 'Изучить хуки и контекст',
+      deadlineNotes: '',
       category: 'frontend',
 
       // ✅ НОВОЕ (для 24 практики): ресурсы по технологии
