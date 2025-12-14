@@ -159,3 +159,11 @@
   background: #f5edff !important;       /* тот же фоновый цвет */
   color: #4B0082 !important;            /* такой же текст */
 }
+
+
+@media (max-width: 480px) {
+  .action-btn {
+    min-width: 100%;
+    max-width: none;
+  }
+}

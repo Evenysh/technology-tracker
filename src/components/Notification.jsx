@@ -1,6 +1,5 @@
-// src/components/Notification.jsx
-import './Notification.css';
-import { useNotification } from '../contexts/NotificationContext';
+import { Snackbar, Alert } from "@mui/material";
+import { useNotification } from "../contexts/NotificationContext";
 
 function Notification() {
   const { notification } = useNotification();
@@ -8,9 +7,15 @@ function Notification() {
   if (!notification) return null;
 
   return (
-    <div className="notification-banner">
-      {notification}
-    </div>
+    <Snackbar
+      open={true}
+      autoHideDuration={3000}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+    >
+      <Alert severity={notification.severity} variant="filled">
+        {notification.message}
+      </Alert>
+    </Snackbar>
   );
 }
 

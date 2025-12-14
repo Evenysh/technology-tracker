@@ -1,10 +1,19 @@
 /* pages/Settings.css */
 
+/* =========================================================
+   ОСНОВНОЙ КОНТЕЙНЕР
+   ========================================================= */
 .settings-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 30px 20px;
+  width: 100%;
+  max-width: none;          /*  Grid должен занимать всю ширину */
+  margin: 0;                /*  убираем центрирование */
+  padding: 24px;
+  box-sizing: border-box;
 }
+
+/* =========================================================
+   ЗАГОЛОВОК СТРАНИЦЫ
+   ========================================================= */
 
 .settings-header {
   text-align: center;
@@ -14,6 +23,8 @@
 .settings-header h1 {
   color: #2c3e50;
   margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .settings-header p {
@@ -21,19 +32,27 @@
   font-size: 18px;
 }
 
-.settings-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-bottom: 40px;
-}
+
+/* =========================================================
+   КАРТОЧКИ / СЕКЦИИ
+   ========================================================= */
 
 .settings-section {
   background: white;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* ВАЖНО ДЛЯ РОВНОЙ СЕТКИ */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
+
+/* =========================================================
+   ЗАГОЛОВОК СЕКЦИИ
+   ========================================================= */
 
 .section-title {
   display: flex;
@@ -49,6 +68,10 @@
   color: #2c3e50;
   font-size: 1.3rem;
 }
+
+/* =========================================================
+   НАСТРОЙКИ
+   ========================================================= */
 
 .setting-item {
   margin-bottom: 25px;
@@ -78,7 +101,9 @@
   margin-top: 10px;
 }
 
-/* dropdown */
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
 
 .select-dropdown {
   width: 100%;
@@ -101,7 +126,8 @@
   padding: 10px;
 }
 
-/* Темная тема dropdown */
+/* Тёмная тема dropdown */
+
 .dark-theme .select-dropdown {
   background-color: #2d3748;
   color: #e2e8f0;
@@ -112,9 +138,9 @@
   border-color: #667eea;
 }
 
-/* ---------------------------------------------------------
-   ЕДИНЫЙ СТИЛЬ ДЛЯ КНОПОК УПРАВЛЕНИЯ ДАННЫМИ (фиолетовые)
---------------------------------------------------------- */
+/* =========================================================
+   КНОПКИ УПРАВЛЕНИЯ ДАННЫМИ
+   ========================================================= */
 
 .actions-group {
   display: flex;
@@ -130,8 +156,8 @@
   font-weight: 600;
   cursor: pointer;
   border: 1px solid #d8cfff;
-  background: #f3ecff;              /* светло-фиолетовый */
-  color: #5a3cc8;                   /* насыщенно-фиолетовый текст */
+  background: #f3ecff;
+  color: #5a3cc8;
   transition: all 0.2s ease;
   text-align: left;
 }
@@ -142,16 +168,20 @@
   transform: translateY(-2px);
 }
 
-/* классы, оставленные для семантики */
+/* Семантические классы — оставлены */
+
 .export-btn {}
 .import-btn {}
-.reset-btn {}   /* здесь больше нет отдельных цветов */
+.reset-btn {}
 .clear-btn {}
 
-/* ------------------------------------------------------ */
+/* =========================================================
+   СБРОС НАСТРОЕК
+   ========================================================= */
 
 .reset-section {
   text-align: center;
+  margin-top: auto; /*  кнопка уезжает вниз карточки */
 }
 
 .reset-description {
@@ -160,7 +190,6 @@
   margin-bottom: 20px;
 }
 
-/* Жёлтая кнопка — только в блоке "Сброс настроек" */
 .reset-section .reset-btn {
   padding: 12px 24px;
   background-color: #fff3e0;
@@ -176,6 +205,10 @@
 .reset-section .reset-btn:hover {
   background-color: #ffe0b2;
 }
+
+/* =========================================================
+   НИЖНИЕ КНОПКИ
+   ========================================================= */
 
 .action-buttons {
   display: flex;
@@ -217,7 +250,9 @@
   transform: scale(1.05);
 }
 
-/* Секция "О приложении" */
+/* =========================================================
+   СЕКЦИЯ "О ПРИЛОЖЕНИИ"
+   ========================================================= */
 
 .app-info {
   display: flex;
@@ -269,7 +304,9 @@
   transform: translateY(-2px);
 }
 
-/* Инфо-плашки */
+/* =========================================================
+   ИНФО-ПЛАШКИ
+   ========================================================= */
 
 .data-warning {
   margin-top: 10px;
@@ -287,43 +324,9 @@
   border-left-color: #ffb74d;
 }
 
-/* Обновление описаний */
-
-.language-actions {
-  margin-top: 10px;
-}
-
-.update-descriptions-btn {
-  width: 100%;
-  padding: 10px 15px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  margin-bottom: 8px;
-}
-
-.update-descriptions-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-/* Тёмная тема для кнопки обновления описаний */
-
-.dark-theme .update-descriptions-btn {
-  background: linear-gradient(135deg, #4c51bf 0%, #805ad5 100%);
-}
-
-.dark-theme .update-descriptions-btn:hover {
-  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
-}
-
-
-/* Делает текст в белых карточках чёрным даже в тёмной теме */
+/* =========================================================
+   ТЁМНАЯ ТЕМА — ЧИТАЕМОСТЬ КАРТОЧЕК
+   ========================================================= */
 
 .dark-theme .settings-section {
   color: #000 !important;
@@ -339,3 +342,142 @@
 .dark-theme .settings-section .app-info * {
   color: #000 !important;
 }
+
+/* =========================================================
+   АДАПТИВНОСТЬ
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 12px;
+  }
+
+  .settings-section {
+    padding: 18px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ===============================
+   SETTINGS PAGE — LAYOUT FIX
+   =============================== */
+
+/* Десктоп: аккуратная сетка */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  align-items: stretch; /*  карточки одной высоты в строке */
+}
+
+/* ===============================
+   TABLET
+   =============================== */
+@media (max-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* ===============================
+   MOBILE
+   =============================== */
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 16px;
+  }
+
+  .settings-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .settings-header p {
+    font-size: 1rem;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr; /* строго 1 колонка */
+    gap: 20px;
+  }
+
+  .settings-section {
+    padding: 16px;
+  }
+}
+
+/* ===============================
+   VERY SMALL SCREENS
+   =============================== */
+@media (max-width: 480px) {
+  .settings-section {
+    padding: 14px;
+  }
+
+  .section-title h2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===============================
+   MOBILE — FULL WIDTH CARDS
+   =============================== */
+
+@media (max-width: 768px) {
+  /* Grid item не должен ограничивать ширину */
+  .settings-container .MuiGrid-item {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Каждая карточка — строго во всю ширину */
+  .settings-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .select-dropdown {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    /* убираем нативную “ширину” select */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* чтобы текст не растягивал элемент */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* контейнеры внутри карточки тоже не должны раздувать ширину */
+  .settings-section,
+  .settings-section * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .settings-section {
+    overflow-x: hidden;
+  }
+}
+

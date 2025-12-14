@@ -567,3 +567,51 @@
   animation: fadeIn 0.5s ease-out;
 }
 
+.home-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+
+/* ===============================
+   MOBILE FIX — HOME PAGE
+   =============================== */
+
+@media (max-width: 768px) {
+  .home-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  /* важно: не трогаем вложенные элементы глобально */
+}
+
+
+@media (max-width: 768px) {
+  .technologies-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-box input {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    width: 100% !important;
+  }
+}

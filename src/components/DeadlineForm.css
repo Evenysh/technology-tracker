@@ -310,7 +310,7 @@
   padding-right: 8px; /* Для скроллбара */
 }
 
-/* Кастомный скроллбар для формы */
+
 .modal-content .deadline-form::-webkit-scrollbar {
   width: 6px;
 }
@@ -429,7 +429,7 @@ kbd {
   animation: success-pulse 2s ease-in-out infinite;
 }
 
-/* Скрытие элементов для скринридеров - УЛУЧШЕННАЯ ВЕРСИЯ */
+/* Скрытие элементов для скринридеров */
 .sr-only {
   position: absolute !important;
   width: 1px !important;

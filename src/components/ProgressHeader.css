@@ -52,3 +52,14 @@
 .main-progress-bar {
   margin-top: 20px;
 }
+
+@media (max-width: 480px) {
+  .stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stat {
+    min-width: 100%;
+  }
+}

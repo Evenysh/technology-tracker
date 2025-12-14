@@ -36,6 +36,7 @@ import { ThemeProvider as AppThemeProvider } from './contexts/ThemeContext';
 
 // MUI Theme
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import Container from '@mui/material/Container';
 import { getMuiTheme } from './theme/muiTheme';
 
 function AppContent() {
@@ -97,72 +98,80 @@ function AppContent() {
           {/* 🔐 login — единственный открытый маршрут */}
           <Route path="/login" element={<Login />} />
 
-          {/* 🔐 ВСЁ приложение защищено */}
+          {/* 🔐 HOME — адаптивный контейнер */}
           <Route
             path="/home"
             element={
               <ProtectedRoute>
-                <div>
-                  <ProgressHeader technologies={technologies} />
+                <Container maxWidth={false}>
+                  <div className="home-container">
+                    <ProgressHeader technologies={technologies} />
 
-                  <QuickActions
-                    onMarkAllCompleted={markAllCompleted}
-                    onResetAll={resetAllStatuses}
-                    onToggleStatus={toggleStatus}
-                  />
-
-                  <div
-                    className="search-box"
-                    style={{
-                      margin: '20px 0',
-                      padding: '15px',
-                      backgroundColor: '#f8f9fa',
-                      borderRadius: '8px'
-                    }}
-                  >
-                    <input
-                      type="text"
-                      placeholder={t.home.searchPlaceholder}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{
-                        padding: '10px',
-                        width: '300px',
-                        border: '1px solid #ddd',
-                        borderRadius: '4px',
-                        marginRight: '10px'
-                      }}
+                    <QuickActions
+                      onMarkAllCompleted={markAllCompleted}
+                      onResetAll={resetAllStatuses}
+                      onToggleStatus={toggleStatus}
                     />
-                    <span style={{ color: '#666' }}>
-                      {t.home.found}:{' '}
-                      <strong>{filteredTechnologies.length}</strong> {t.home.of}{' '}
-                      {technologies.length}
-                    </span>
-                  </div>
 
-                  <FilterButtons
-                    activeFilter={activeFilter}
-                    onFilterChange={setActiveFilter}
-                  />
+                    <div
+                      className="search-box"
+                      style={{
+                        margin: '20px 0',
+                        padding: '15px',
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      <input
+                        type="text"
+                        placeholder={t.home.searchPlaceholder}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={{
+                          padding: '10px',
+                          width: '300px',
+                          border: '1px solid #ddd',
+                          borderRadius: '4px',
+                          marginRight: '10px'
+                        }}
+                      />
+                      <span style={{ color: '#666' }}>
+                        {t.home.found}:{' '}
+                        <strong>{filteredTechnologies.length}</strong> {t.home.of}{' '}
+                        {technologies.length}
+                      </span>
+                    </div>
 
-                  <div className="technologies-list">
-                    {filteredTechnologies.length > 0 ? (
-                      filteredTechnologies.map((tech) => (
-                        <TechnologyCard
-                          key={tech.id}
-                          {...tech}
-                          onStatusChange={toggleStatus}
-                          onNotesChange={updateNotes}
-                          onDelete={removeTechnology}
-                        />
-                      ))
-                    ) : (
-                      <p style={{ textAlign: 'center', color: '#666', padding: '40px' }}>
-                        {t.home.noTechnologies}
-                      </p>
-                    )}
+                    <FilterButtons
+                      activeFilter={activeFilter}
+                      onFilterChange={setActiveFilter}
+                    />
+
+                    <div className="technologies-list">
+                      {filteredTechnologies.length > 0 ? (
+                        filteredTechnologies.map((tech) => (
+                          <TechnologyCard
+                            key={tech.id}
+                            {...tech}
+                            onStatusChange={toggleStatus}
+                            onNotesChange={updateNotes}
+                            onDelete={removeTechnology}
+                          />
+                        ))
+                      ) : (
+                        <p
+                          style={{
+                            textAlign: 'center',
+                            color: '#666',
+                            padding: '40px'
+                          }}
+                        >
+                          {t.home.noTechnologies}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </Container>
               </ProtectedRoute>
             }
           />

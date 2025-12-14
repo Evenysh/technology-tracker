@@ -1,4 +1,3 @@
-// src/contexts/NotificationContext.jsx
 import { createContext, useContext, useState } from "react";
 
 const NotificationContext = createContext();
@@ -6,8 +5,8 @@ const NotificationContext = createContext();
 export function NotificationProvider({ children }) {
   const [notification, setNotification] = useState(null);
 
-  const showNotification = (msg) => {
-    setNotification(msg);
+  const showNotification = (message, severity = "info") => {
+    setNotification({ message, severity });
     setTimeout(() => setNotification(null), 3000);
   };
 

@@ -1,4 +1,5 @@
 // src/components/Navigation.jsx
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations } from "../i18n/translations";
@@ -10,6 +11,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import "./Navigation.css";
 
@@ -20,19 +27,22 @@ function Navigation() {
   const { isAuthenticated, logout } = useAuth();
   const t = translations[language];
 
-  // 🔐 Порядок: Home → Stats(если есть) → API Search → Settings(если есть)
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setMobileOpen((prev) => !prev);
+  };
+
+  // 🔐 Порядок: Home → Stats → API Search → Settings
   const navItems = [
     { path: "/", label: t.navigation.home, exact: true, icon: "🏠" },
 
-    // 🔐 Stats показываем только авторизованным
     ...(isAuthenticated
       ? [{ path: "/stats", label: t.navigation.stats, icon: "📊" }]
       : []),
 
-    // API Search всегда доступен
     { path: "/api-search", label: t.navigation.apiSearch || "API Поиск", icon: "🔍" },
 
-    // 🔐 Settings показываем только авторизованным
     ...(isAuthenticated
       ? [{ path: "/settings", label: t.navigation.settings, icon: "⚙️" }]
       : []),
@@ -43,16 +53,85 @@ function Navigation() {
     navigate("/home");
   };
 
+  const drawerContent = (
+    <Box sx={{ width: 260 }} onClick={toggleDrawer}>
+      <Box sx={{ padding: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+          {t.navigation.appName || "Трекер технологий"}
+        </Typography>
+      </Box>
+
+      <List>
+        {navItems.map((item) => {
+          const isActive = item.exact
+            ? location.pathname === item.path
+            : location.pathname.startsWith(item.path);
+
+          return (
+            <ListItem
+              key={item.path}
+              button
+              component={Link}
+              to={item.path}
+              selected={isActive}
+            >
+              <ListItemText
+                primary={
+                  <>
+                    <span style={{ marginRight: 8 }}>{item.icon}</span>
+                    {item.label}
+                  </>
+                }
+              />
+            </ListItem>
+          );
+        })}
+
+        <Box sx={{ padding: 2 }}>
+          {!isAuthenticated ? (
+            <Button
+              fullWidth
+              variant="outlined"
+              color="primary"
+              onClick={() => navigate("/login")}
+            >
+              {language === "ru" ? "Войти" : "Login"}
+            </Button>
+          ) : (
+            <Button
+              fullWidth
+              variant="outlined"
+              color="error"
+              onClick={handleLogout}
+            >
+              {language === "ru" ? "Выйти" : "Logout"}
+            </Button>
+          )}
+        </Box>
+      </List>
+    </Box>
+  );
+
   return (
     <AppBar position="sticky" color="default" sx={{ boxShadow: 1 }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        {/* ☰ BURGER — только на мобильных */}
+        <IconButton
+          edge="start"
+          color="inherit"
+          onClick={toggleDrawer}
+          sx={{ display: { xs: "flex", md: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
+
         {/* LOGO */}
         <Typography variant="h6" sx={{ fontWeight: 700 }}>
           {t.navigation.appName || "Трекер технологий"}
         </Typography>
 
-        {/* NAVIGATION BUTTONS */}
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        {/* DESKTOP NAVIGATION */}
+        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, alignItems: "center" }}>
           {navItems.map((item) => {
             const isActive = item.exact
               ? location.pathname === item.path
@@ -77,7 +156,6 @@ function Navigation() {
             );
           })}
 
-          {/* 🔐 Кнопка ВОЙТИ / ВЫЙТИ */}
           {!isAuthenticated ? (
             <Button
               variant="outlined"
@@ -99,6 +177,16 @@ function Navigation() {
           )}
         </Box>
       </Toolbar>
+
+      {/* MOBILE DRAWER */}
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={toggleDrawer}
+        sx={{ display: { xs: "block", md: "none" } }}
+      >
+        {drawerContent}
+      </Drawer>
     </AppBar>
   );
 }

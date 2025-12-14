@@ -291,3 +291,31 @@
   transform: none !important;
   box-shadow: none !important;
 }
+
+/* ==========================
+   MOBILE FIX — CARD ACTIONS
+   ========================== */
+
+@media (max-width: 480px) {
+  .card-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .header-right .action-btn {
+    font-size: 1.3rem;
+    padding: 6px;
+  }
+
+  .card-header h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+}
